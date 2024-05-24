@@ -15,15 +15,13 @@
     name:
       - i3
       - xfce4-panel-devel
-      - libxfce4
-      - libxfce4ui-devel
-      - libxfce4util
+      - 'libxfce4*'
       - libxcb
       - xcb-proto
       - glib
       - gobject-introspection
       - json-glib
-      - gtk-doc-tools
+      - gtk-doc
 
 #- name: Replace xfwm with i3
 #- name: Install i3-glibc
