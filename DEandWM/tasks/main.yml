@@ -1,0 +1,33 @@
+- name: Install xfce4 desktop environment
+  dnf:
+    name: @xfce-desktop-environment
+    state: present
+
+- name: Change default target to graphical.target
+  file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link
+
+- name: Install i3 window manager and other dependencies around it
+  dnf:
+    name:
+      - i3
+      - xfce4-panel-devel
+      - libxfce4
+      - libxfce4ui-devel
+      - libxfce4util
+      - libxcb
+      - xcb-proto
+      - glib
+      - object-introspection
+      - json-glib
+      - gtk-doc-tools
+
+#- name: Replace xfwm with i3
+#- name: Install i3-glibc
+
+
+#- name: Install xfce4-i3-workspace-plugin
+
+
