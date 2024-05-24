@@ -1,8 +1,8 @@
 - hosts: localhost
   connection: local
 
-  vars_files:
-    - vars/{{ config_file }}.yml
+    #vars_files:
+    #- vars/{{ config_file }}.yml
 
   roles:
     - DEandWM
