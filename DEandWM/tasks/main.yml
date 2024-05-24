@@ -21,7 +21,7 @@
       - libxcb
       - xcb-proto
       - glib
-      - object-introspection
+      - gobject-introspection
       - json-glib
       - gtk-doc-tools
 
