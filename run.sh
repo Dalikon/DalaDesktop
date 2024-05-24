@@ -6,7 +6,7 @@ set -o pipefail # Use last non-zero exit code in a pipeline
 
 # Define constants
 readonly PROJECTS_DIR=DalaDesktopAnsible
-readonly PLAYBOOK_REPO="https://gitlab.com/radek-sprta/ansible-personal.git"
+readonly PLAYBOOK_REPO="https://github.com/Dalikon/DalaDesktop"
 readonly PLAYBOOK=setup.yml
 
 function main() {
