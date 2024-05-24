@@ -1,6 +1,7 @@
 - name: Install xfce4 desktop environment
   dnf:
-    name: @xfce-desktop-environment
+    name: 
+      - @xfce-desktop-environment
     state: present
 
 - name: Change default target to graphical.target
