@@ -25,6 +25,7 @@
       - autoconf
       - automake
       - libtool
+        #- intltool
 
 - name: Create folder for repos needed
   file:
