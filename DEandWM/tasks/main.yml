@@ -20,7 +20,9 @@
       - xcb-proto
       - glib
       - gobject-introspection
+      - gobject-introspection-devel
       - json-glib
+      - json-glib-devel
       - gtk-doc
       - autoconf
       - automake
@@ -64,6 +66,37 @@
   args:
     chdir: "./InstallRepos/i3ipc-glibc"
 
+- name: create folder for xfce4-i3-workspaces-plugin
+  file:
+    path: "./InstallRepos/xfce4-i3-workspaces-plugin"
+    state: directory
+
+- name: Clone xfce4-i3-workspaces-plugin
+  git:
+    repo: "https://github.com/denesb/xfce4-i3-workspaces-plugin.git"
+    dest: "./InstallRepos/xfce4-i3-workspaces-plugin"
+    version: "master"  # or any other branch/tag/commit
+    update: yes
+
+- name: reconfigure plugin
+  command: autoreconf -vfi
+  args:
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
+
+- name: Run ./autogen for i3-glibc
+  command: ./autogen.sh --prefix=/usr
+  args:
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
+
+- name: Run make for i3-glibc
+  command: make
+  args:
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
+
+- name: Run sudo make install for i3ipc-glibc
+  command: sudo make install
+  args:
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
 #- name: Install xfce4-i3-workspace-plugin
 
 
