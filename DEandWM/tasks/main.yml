@@ -34,30 +34,35 @@
 
 - name: Create folder for i3-glibc
   file:
-    path: "./InstallRepos/i3-glibc"
+    path: "./InstallRepos/i3ipc-glibc"
     state: directory
 
 - name: Clone i3-glibc
   git:
     repo: "https://github.com/altdesktop/i3ipc-glib"
-    dest: "./InstallRepos/i3-glibc"
+    dest: "./InstallRepos/i3ipc-glibc"
     version: "master"  # or any other branch/tag/commit
     update: yes
+
+- name: reconfigure
+  command: autoreconf -vfi
+  args:
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 - name: Run ./autogen for i3-glibc
   command: ./autogen.sh --prefix=/usr
   args:
-    chdir: "./InstallRepos/i3-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 - name: Run make for i3-glibc
   command: make
   args:
-    chdir: "./InstallRepos/i3-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
-- name: Run sudo make install for i3-glibc
+- name: Run sudo make install for i3ipc-glibc
   command: sudo make install
   args:
-    chdir: "./InstallRepos/i3-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 #- name: Install xfce4-i3-workspace-plugin
 
