@@ -15,6 +15,7 @@
     name:
       - i3
       - xfce4-panel-devel
+      - xfce4-dev-tools
       - 'libxfce4*'
       - libxcb
       - xcb-proto
@@ -78,12 +79,12 @@
     version: "master"  # or any other branch/tag/commit
     update: yes
 
-- name: Run ./autogen for i3-glibc
+- name: Run ./autogen for workspaces plugin
   command: ./autogen.sh --prefix=/usr
   args:
     chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
 
-- name: Run make for i3-glibc
+- name: Run make for workspaces plugin
   command: make
   args:
     chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
