@@ -37,7 +37,7 @@
   git:
     repo: "https://github.com/altdesktop/i3ipc-glib"
     dest: "./InstallRepos/i3-glibc"
-    version: "main"  # or any other branch/tag/commit
+    version: "master"  # or any other branch/tag/commit
     update: yes
 
 - name: Run ./autogen for i3-glibc
