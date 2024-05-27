@@ -78,11 +78,6 @@
     version: "master"  # or any other branch/tag/commit
     update: yes
 
-- name: reconfigure plugin
-  command: autoreconf -vfi
-  args:
-    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
-
 - name: Run ./autogen for i3-glibc
   command: ./autogen.sh --prefix=/usr
   args:
