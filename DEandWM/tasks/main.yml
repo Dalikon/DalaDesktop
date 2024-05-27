@@ -22,6 +22,9 @@
       - gobject-introspection
       - json-glib
       - gtk-doc
+      - autoconf
+      - automake
+      - libtool
 
 - name: Create folder for repos needed
   file:
@@ -41,7 +44,7 @@
     update: yes
 
 - name: Run ./autogen for i3-glibc
-  command: ./autogen.sh
+  command: ./autogen.sh --prefix=/usr
   args:
     chdir: "./InstallRepos/i3-glibc"
 
