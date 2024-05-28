@@ -75,7 +75,7 @@
 - name: Clone xfce4-i3-workspaces-plugin
   git:
     repo: "https://github.com/denesb/xfce4-i3-workspaces-plugin.git"
-    dest: "./InstallRepos/xfce4-i3-workspaces-plugin"
+    dest: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
     version: "master"  # or any other branch/tag/commit
     update: yes
 
