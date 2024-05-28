@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-panel" version="1.0">
+  <property name="configver" type="int" value="2"/>
+  <property name="panels" type="array">
+    <value type="int" value="1"/>
+    <property name="dark-mode" type="bool" value="true"/>
+    <property name="panel-1" type="empty">
+      <property name="position" type="string" value="p=6;x=0;y=0"/>
+      <property name="length" type="double" value="100"/>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="icon-size" type="uint" value="16"/>
+      <property name="size" type="uint" value="35"/>
+      <property name="plugin-ids" type="array">
+        <value type="int" value="4"/>
+        <value type="int" value="27"/>
+        <value type="int" value="28"/>
+        <value type="int" value="29"/>
+        <value type="int" value="2"/>
+        <value type="int" value="3"/>
+        <value type="int" value="10"/>
+        <value type="int" value="5"/>
+        <value type="int" value="11"/>
+        <value type="int" value="12"/>
+        <value type="int" value="14"/>
+        <value type="int" value="13"/>
+        <value type="int" value="7"/>
+        <value type="int" value="6"/>
+        <value type="int" value="9"/>
+        <value type="int" value="8"/>
+      </property>
+      <property name="output-name" type="string" value="Primary"/>
+    </property>
+  </property>
+  <property name="plugins" type="empty">
+    <property name="plugin-2" type="string" value="tasklist">
+      <property name="grouping" type="uint" value="1"/>
+    </property>
+    <property name="plugin-3" type="string" value="separator">
+      <property name="expand" type="bool" value="true"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-5" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-11" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-12" type="string" value="clock">
+      <property name="digital-layout" type="uint" value="1"/>
+      <property name="mode" type="uint" value="2"/>
+      <property name="digital-time-font" type="string" value="Sans 15"/>
+      <property name="digital-date-font" type="string" value="Sans 12"/>
+    </property>
+    <property name="plugin-13" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-27" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="16883144136.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-28" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="16882308344.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-29" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="16882308032.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-6" type="string" value="power-manager-plugin"/>
+    <property name="plugin-7" type="string" value="pulseaudio">
+      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+      <property name="known-players" type="string" value=";Brave;firefox;io.gitlab.zehkira.Monophony;org.gnome.Totem;org.kde.audiotube;vlc"/>
+    </property>
+    <property name="plugin-8" type="string" value="actions"/>
+    <property name="plugin-9" type="string" value="systray">
+      <property name="known-legacy-items" type="array">
+        <value type="string" value="wi-fi network connection “dalafon” active: dalafon (72%)"/>
+        <value type="string" value="wi-fi network connection “base48-5” active: base48-5 (70%)"/>
+        <value type="string" value="wi-fi network connection “base48-5” active: base48-5 (72%)"/>
+        <value type="string" value="wi-fi network connection “base48-5” active: base48-5 (68%)"/>
+        <value type="string" value="wi-fi network connection “dalafon” active: dalafon (92%)"/>
+        <value type="string" value="wi-fi network connection “dalafon” active: dalafon (73%)"/>
+        <value type="string" value="redshift-gtk"/>
+        <value type="string" value="wi-fi network connection “base48-5” active: base48-5 (69%)"/>
+        <value type="string" value="wi-fi network connection “base48-5” active: base48-5 (71%)"/>
+        <value type="string" value="blueman-tray"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (59%)"/>
+        <value type="string" value="youtube-music-desktop-app"/>
+        <value type="string" value="configuring ethernet network connection “wired connection 1”…"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (49%)"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (45%)"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (47%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (47%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (48%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (52%)"/>
+        <value type="string" value="wi-fi network connection “gulasovi” active: gulasovi (57%)"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (70%)"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (73%)"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (72%)"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (69%)"/>
+        <value type="string" value="evolution-alarm-notify"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="dnfdragora-updater"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (53%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (63%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (68%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (50%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (67%)"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (51%)"/>
+        <value type="string" value="ethernet network connection “wired connection 1” active"/>
+        <value type="string" value="seapplet"/>
+        <value type="string" value="wi-fi network connection “penas 5g” active: penas 5g (51%)"/>
+        <value type="string" value="wi-fi network connection “dálafón” active: dálafón (89%)"/>
+        <value type="string" value="discord"/>
+        <value type="string" value="reminders"/>
+        <value type="string" value="selinux troubleshooter"/>
+        <value type="string" value="wi-fi network connection “vutbrno” active: vutbrno (55%)"/>
+      </property>
+      <property name="known-items" type="array">
+        <value type="string" value="redshift"/>
+        <value type="string" value="OpenTodoList"/>
+        <value type="string" value="obs"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="chrome_status_icon_1"/>
+        <value type="string" value="blueman"/>
+        <value type="string" value="dnfdragora-updater"/>
+      </property>
+      <property name="single-row" type="bool" value="false"/>
+      <property name="hide-new-items" type="bool" value="false"/>
+      <property name="square-icons" type="bool" value="true"/>
+      <property name="hidden-items" type="array">
+      </property>
+    </property>
+    <property name="plugin-4" type="string" value="whiskermenu">
+      <property name="recent" type="array">
+        <value type="string" value="realvnc-vncviewer.desktop"/>
+        <value type="string" value="blueman-manager.desktop"/>
+        <value type="string" value="discord.desktop"/>
+        <value type="string" value="virt-manager.desktop"/>
+        <value type="string" value="xfce-session-settings.desktop"/>
+        <value type="string" value="org.gnome.Software.desktop"/>
+        <value type="string" value="xfce4-file-manager.desktop"/>
+        <value type="string" value="xfce-display-settings.desktop"/>
+        <value type="string" value="xfce4-screenshooter.desktop"/>
+        <value type="string" value="org.gnome.Cheese.desktop"/>
+      </property>
+    </property>
+    <property name="plugin-10" type="string" value="i3-workspaces"/>
+    <property name="plugin-14" type="string" value="systemload">
+      <property name="uptime" type="empty">
+        <property name="enabled" type="bool" value="false"/>
+      </property>
+      <property name="network" type="empty">
+        <property name="enabled" type="bool" value="false"/>
+      </property>
+      <property name="swap" type="empty">
+        <property name="enabled" type="bool" value="false"/>
+      </property>
+      <property name="cpu" type="empty">
+        <property name="label" type="string" value="CPU"/>
+        <property name="color" type="array">
+          <value type="double" value="0.59999999999999998"/>
+          <value type="double" value="0.75686274509803919"/>
+          <value type="double" value="0.94509803921568625"/>
+          <value type="double" value="1"/>
+        </property>
+      </property>
+      <property name="memory" type="empty">
+        <property name="label" type="string" value="RAM"/>
+      </property>
+    </property>
+  </property>
+</channel>
