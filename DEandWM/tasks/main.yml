@@ -93,9 +93,17 @@
   command: sudo make install
   args:
     chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
-#- name: Install xfce4-i3-workspace-plugin
 
 
+- name: Create the .config directory
+  file:
+    path: "/home/dala/.config"
+    state: directory
+
+- name: Place the configs
+  copy:
+    src: "./configs/"
+    dest: "/home/dala/.config/"
 #- name: Replace xfwm with i3
 
 
