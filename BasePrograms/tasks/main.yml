@@ -8,6 +8,5 @@
       - nitrogen
       - neovim
       - firefox
-      - discord
       - redshift
     state: present
