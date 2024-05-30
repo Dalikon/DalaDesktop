@@ -23,7 +23,7 @@
     - name: Create the .config directory
       file:
         path: "/home/dala/.config"
-        state: directory``````
+        state: directory
 
     - name: Place the configs
       copy:
