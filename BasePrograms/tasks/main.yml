@@ -1,0 +1,13 @@
+- name: install the basic programs
+  dnf:
+    name:
+      - alacritty
+      - xfce4-whiskermenu-plugin
+      - xfce4-systemload-plugin
+      - picom
+      - nitrogen
+      - neovim
+      - firefox
+      - discord
+      - redshift
+    state: present

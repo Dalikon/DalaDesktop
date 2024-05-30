@@ -4,5 +4,33 @@
     #vars_files:
     #- vars/{{ config_file }}.yml
 
+  tasks:
+    - name: Create folder for repos needed
+      file:
+      path: "/home/dala/InstallRepos"
+      state: directory
+  
+    - name: Create folder for i3-glibc
+      file:
+      path: "/home/dala/InstallRepos/i3ipc-glibc"
+      state: directory
+        
+    - name: create folder for xfce4-i3-workspaces-plugin
+      file:
+      path: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
+      state: directory
+    
+    - name: Create the .config directory
+      file:
+      path: "/home/dala/.config"
+      state: directory
+
+    - name: Place the configs
+      copy:
+      src: "./configs/"
+      dest: "/home/dala/.config/"
+
   roles:
     - DEandWM
+    - BasePrograms
+

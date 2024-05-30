@@ -30,15 +30,7 @@
       - libtool
         #- intltool
 
-- name: Create folder for repos needed
-  file:
-    path: "/home/dala/InstallRepos"
-    state: directory
 
-- name: Create folder for i3-glibc
-  file:
-    path: "/home/dala/InstallRepos/i3ipc-glibc"
-    state: directory
 
 - name: Clone i3-glibc
   git:
@@ -67,10 +59,6 @@
   args:
     chdir: "/home/dala/InstallRepos/i3ipc-glibc"
 
-- name: create folder for xfce4-i3-workspaces-plugin
-  file:
-    path: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
-    state: directory
 
 - name: Clone xfce4-i3-workspaces-plugin
   git:
@@ -94,18 +82,9 @@
   args:
     chdir: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
 
-
-- name: Create the .config directory
-  file:
-    path: "/home/dala/.config"
-    state: directory
-
-- name: Place the configs
-  copy:
-    src: "./configs/"
-    dest: "/home/dala/.config/"
-#- name: Replace xfwm with i3
-
-
-
-
+- name: Uninstall xfwm4 and xfdesktop
+  dnf:
+    name:
+      - xfwm4
+      - xfdesktop
+    state: absent
