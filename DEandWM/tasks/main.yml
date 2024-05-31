@@ -1,94 +1,90 @@
-vars:
-     user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
+- name: Install xfce4 desktop environment
+  dnf:
+    name: 
+      - '@xfce-desktop-environment'
+    state: present
 
-tasks:
-  - name: Install xfce4 desktop environment
-    dnf:
-      name: 
-        - '@xfce-desktop-environment'
-      state: present
-  
-  - name: Change default target to graphical.target
-    file:
-      src: /usr/lib/systemd/system/graphical.target
-      dest: /etc/systemd/system/default.target
-      state: link
-  
-  - name: Install i3 window manager and other dependencies around it
-    dnf:
-      name:
-        - i3
-        - xfce4-panel-devel
-        - xfce4-dev-tools
-        - 'libxfce4*'
-        - libxcb
-        - xcb-proto
-        - glib
-        - gobject-introspection
-        - gobject-introspection-devel
-        - json-glib
-        - json-glib-devel
-        - gtk-doc
-        - autoconf
-        - automake
-        - libtool
-          #- intltool
-  
-  
-  
-  - name: Clone i3-glibc
-    git:
-      repo: "https://github.com/altdesktop/i3ipc-glib"
-      dest: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
-      version: "master"  # or any other branch/tag/commit
-      update: yes
-  
-  - name: reconfigure
-    command: autoreconf -vfi
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
-  
-  - name: Run ./autogen for i3-glibc
-    command: ./autogen.sh --prefix=/usr
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
-  
-  - name: Run make for i3-glibc
-    command: make
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
-  
-  - name: Run sudo make install for i3ipc-glibc
-    command: sudo make install
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
-  
-  
-  - name: Clone xfce4-i3-workspaces-plugin
-    git:
-      repo: "https://github.com/denesb/xfce4-i3-workspaces-plugin.git"
-      dest: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
-      version: "master"  # or any other branch/tag/commit
-      update: yes
-  
-  - name: Run ./autogen for workspaces plugin
-    command: ./autogen.sh --prefix=/usr
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
-  
-  - name: Run make for workspaces plugin
-    command: make
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
-  
-  - name: Run sudo make install for i3ipc-glibc
-    command: sudo make install
-    args:
-      chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
-  
-  - name: Uninstall xfwm4 and xfdesktop
-    dnf:
-      name:
-        - xfwm4
-        - xfdesktop
-      state: absent
+- name: Change default target to graphical.target
+  file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link
+
+- name: Install i3 window manager and other dependencies around it
+  dnf:
+    name:
+      - i3
+      - xfce4-panel-devel
+      - xfce4-dev-tools
+      - 'libxfce4*'
+      - libxcb
+      - xcb-proto
+      - glib
+      - gobject-introspection
+      - gobject-introspection-devel
+      - json-glib
+      - json-glib-devel
+      - gtk-doc
+      - autoconf
+      - automake
+      - libtool
+        #- intltool
+
+
+
+- name: Clone i3-glibc
+  git:
+    repo: "https://github.com/altdesktop/i3ipc-glib"
+    dest: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+    version: "master"  # or any other branch/tag/commit
+    update: yes
+
+- name: reconfigure
+  command: autoreconf -vfi
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+
+- name: Run ./autogen for i3-glibc
+  command: ./autogen.sh --prefix=/usr
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+
+- name: Run make for i3-glibc
+  command: make
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+
+- name: Run sudo make install for i3ipc-glibc
+  command: sudo make install
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+
+
+- name: Clone xfce4-i3-workspaces-plugin
+  git:
+    repo: "https://github.com/denesb/xfce4-i3-workspaces-plugin.git"
+    dest: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+    version: "master"  # or any other branch/tag/commit
+    update: yes
+
+- name: Run ./autogen for workspaces plugin
+  command: ./autogen.sh --prefix=/usr
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+
+- name: Run make for workspaces plugin
+  command: make
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+
+- name: Run sudo make install for i3ipc-glibc
+  command: sudo make install
+  args:
+    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+
+- name: Uninstall xfwm4 and xfdesktop
+  dnf:
+    name:
+      - xfwm4
+      - xfdesktop
+    state: absent
