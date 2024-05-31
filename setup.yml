@@ -45,9 +45,9 @@
   roles:
     - role: DEandWM
       vars:
-        user: {{ user }}
+        user: "{{ user }}"
     - role: BasePrograms
       vars:
-        user: {{ user }}
+        user: "{{ user }}"
 
 
