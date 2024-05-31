@@ -4,31 +4,43 @@
     #vars_files:
     #- vars/{{ config_file }}.yml
 
+
   tasks:
+    - name: Retrieve current user's username
+      set_fact:
+        user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
+
     - name: Create folder for repos needed
       file:
-        path: "/home/dala/InstallRepos"
+        path: "/home/{{ user }}/InstallRepos"
         state: directory
+      become: no
   
     - name: Create folder for i3-glibc
       file:
-        path: "/home/dala/InstallRepos/i3ipc-glibc"
+        path: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
         state: directory
+      become: no
         
     - name: create folder for xfce4-i3-workspaces-plugin
       file:
-        path: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
+        path: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
         state: directory
+      become: no
     
     - name: Create the .config directory
       file:
-        path: "/home/dala/.config"
+        path: "/home/{{ user }}/.config"
         state: directory
+      become: no
 
     - name: Place the configs
       copy:
         src: "./configs/"
-        dest: "/home/dala/.config/"
+        dest: "/home/{{ user }}/.config/"
+      become: no
+
+        #- name: 
 
   roles:
     - DEandWM

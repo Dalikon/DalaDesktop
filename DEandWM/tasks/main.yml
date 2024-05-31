@@ -35,52 +35,52 @@
 - name: Clone i3-glibc
   git:
     repo: "https://github.com/altdesktop/i3ipc-glib"
-    dest: "/home/dala/InstallRepos/i3ipc-glibc"
+    dest: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
     version: "master"  # or any other branch/tag/commit
     update: yes
 
 - name: reconfigure
   command: autoreconf -vfi
   args:
-    chdir: "/home/dala/InstallRepos/i3ipc-glibc"
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
 
 - name: Run ./autogen for i3-glibc
   command: ./autogen.sh --prefix=/usr
   args:
-    chdir: "/home/dala/InstallRepos/i3ipc-glibc"
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
 
 - name: Run make for i3-glibc
   command: make
   args:
-    chdir: "/home/dala/InstallRepos/i3ipc-glibc"
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
 
 - name: Run sudo make install for i3ipc-glibc
   command: sudo make install
   args:
-    chdir: "/home/dala/InstallRepos/i3ipc-glibc"
+    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
 
 
 - name: Clone xfce4-i3-workspaces-plugin
   git:
     repo: "https://github.com/denesb/xfce4-i3-workspaces-plugin.git"
-    dest: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
+    dest: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
     version: "master"  # or any other branch/tag/commit
     update: yes
 
 - name: Run ./autogen for workspaces plugin
   command: ./autogen.sh --prefix=/usr
   args:
-    chdir: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
+    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
 
 - name: Run make for workspaces plugin
   command: make
   args:
-    chdir: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
+    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
 
 - name: Run sudo make install for i3ipc-glibc
   command: sudo make install
   args:
-    chdir: "/home/dala/InstallRepos/xfce4-i3-workspaces-plugin"
+    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
 
 - name: Uninstall xfwm4 and xfdesktop
   dnf:

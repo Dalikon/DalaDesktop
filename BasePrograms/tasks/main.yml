@@ -8,5 +8,5 @@
       - nitrogen
       - neovim
       - firefox
-      - redshift
+      - redshift-gtk
     state: present
