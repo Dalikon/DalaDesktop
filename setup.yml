@@ -3,13 +3,10 @@
   become: yes
     #vars_files:
     #- vars/{{ config_file }}.yml
-
+  vars:
+     user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
 
   tasks:
-    - name: Retrieve current user's username
-      set_fact:
-        user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
-
     - name: Create folder for repos needed
       file:
         path: "/home/{{ user }}/InstallRepos"
