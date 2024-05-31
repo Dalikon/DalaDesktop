@@ -1,3 +1,8 @@
+- name: Debug user variable
+  debug:
+    msg: "{{ user }}"
+
+
 - name: Install xfce4 desktop environment
   dnf:
     name: 
