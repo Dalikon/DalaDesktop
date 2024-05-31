@@ -7,9 +7,6 @@
      user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
 
   pre_tasks:
-    - name: debug
-      debug:
-        var: user
     - name: Create folder for repos needed
       file:
         path: "/home/{{ user }}/InstallRepos"
