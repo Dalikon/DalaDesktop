@@ -10,6 +10,7 @@
     - name: debug
       debug:
         var: user
+        
     - name: Create folder for repos needed
       file:
         path: "/home/{{ user }}/InstallRepos"
@@ -42,12 +43,12 @@
 
         #- name: 
 
-  roles:
-    - role: DEandWM
-      vars:
-        user: "{{ user }}"
-    - role: BasePrograms
-      vars:
-        user: "{{ user }}"
+        #roles:
+        #- role: DEandWM
+        #8vars:
+        #user: "{{ user }}"
+        #- role: BasePrograms
+        #vars:
+        #user: "{{ user }}"
 
 
