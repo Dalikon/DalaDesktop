@@ -10,3 +10,13 @@
       - firefox
       - redshift-gtk
     state: present
+
+- name: Create .vim folder
+  file:
+    path: "/home/{{ user }}/.vim"
+    state: directory
+
+- name: Copy nvimrc to the computer
+  copy:
+    src: "./nvimrc/"
+    dest: "/home/{{ user }}/.vim"

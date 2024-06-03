@@ -87,9 +87,11 @@
   args:
     chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
 
-- name: Uninstall xfwm4 and xfdesktop
+- name: Uninstall xfwm4, xfdesktop, i3status a i3lock
   dnf:
     name:
       - xfwm4
       - xfdesktop
+      - 'i3status*'
+      - i3lock
     state: absent
