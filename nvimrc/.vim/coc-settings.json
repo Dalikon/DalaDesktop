@@ -1,0 +1,49 @@
+{
+    "languageserver": {
+        "golang": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+            "filetypes": ["go"],
+            "initializationOptions": {
+                "usePlaceholders": true
+            }
+        },
+        "rust": {
+            "command": "rust-analyzer",
+            "filetypes": ["rust"],
+            "rootPatterns": ["Cargo.toml"]
+        },
+        "ccls": {
+            "command": "ccls",
+            "args": ["--log-file=/tmp/ccls.log", "-v=1"],
+            "filetypes": ["c", "cpp", "objc", "objcpp", "cc", "c++"],
+            "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                },
+                "client": {
+                    "snippetSupport": true
+                }
+            }
+        },
+        "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/15.0.6/clangd_15.0.6/bin/clangd"
+    },
+    "list.source.files.defaultOptions": ["--number-select"],
+    "coc.preferences.extensionUpdateCheck": "weekly",
+    "coc.preferences.formatOnSaveFiletypes": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "dart",
+        "rust",
+        "xml"
+    ],
+    "tsserver.formatOnType": true,
+    "coc.preferences.formatOnType": true,
+    "rust-analyzer.inlayHints.enable": false,
+    "rust-analyzer.hoverActions.linksInHover": true, 
+    "hover.floatMaxHeight": 20 ,
+    "hover.floatMaxWidth": 80
+}
