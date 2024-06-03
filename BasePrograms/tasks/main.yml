@@ -1,4 +1,5 @@
 - name: install the basic programs
+  become: yes
   dnf:
     name:
       - alacritty
@@ -18,5 +19,5 @@
 
 - name: Copy nvimrc to the computer
   copy:
-    src: "./nvimrc/"
+    src: "./nvimrc/.vim/"
     dest: "/home/{{ user }}/.vim"

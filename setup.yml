@@ -1,6 +1,5 @@
 - hosts: localhost
   connection: local
-  become: yes
     #vars_files:
     #- vars/{{ config_file }}.yml
   vars:
@@ -11,31 +10,26 @@
       file:
         path: "/home/{{ user }}/InstallRepos"
         state: directory
-      become: no
   
     - name: Create folder for i3-glibc
       file:
         path: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
         state: directory
-      become: no
         
     - name: create folder for xfce4-i3-workspaces-plugin
       file:
         path: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
         state: directory
-      become: no
     
     - name: Create the .config directory
       file:
         path: "/home/{{ user }}/.config"
         state: directory
-      become: no
 
     - name: Place the configs
       copy:
         src: "./configs/"
         dest: "/home/{{ user }}/.config/"
-      become: no
 
         #- name: 
 

@@ -1,21 +1,19 @@
-- name: Debug user variable
-  debug:
-    msg: "{{ user }}"
-
-
 - name: Install xfce4 desktop environment
+  become: yes
   dnf:
     name: 
       - '@xfce-desktop-environment'
     state: present
 
 - name: Change default target to graphical.target
+  become: yes
   file:
     src: /usr/lib/systemd/system/graphical.target
     dest: /etc/systemd/system/default.target
     state: link
 
 - name: Install i3 window manager and other dependencies around it
+  become: yes
   dnf:
     name:
       - i3
@@ -88,6 +86,7 @@
     chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
 
 - name: Uninstall xfwm4, xfdesktop, i3status a i3lock
+  become: yes
   dnf:
     name:
       - xfwm4
