@@ -58,6 +58,7 @@
     chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
 
 - name: Run sudo make install for i3ipc-glibc
+  become: yes
   command: sudo make install
   args:
     chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
