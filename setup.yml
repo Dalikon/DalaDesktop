@@ -31,7 +31,10 @@
         src: "./configs/"
         dest: "/home/{{ user }}/.config/"
 
-        #- name: 
+    - name: Copy bashrc
+      copy:
+        src: "./.bashrc"
+        dest: "/home/{{ user }}/"
 
   roles:
     - role: DEandWM
