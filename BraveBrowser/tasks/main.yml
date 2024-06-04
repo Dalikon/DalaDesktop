@@ -1,0 +1,21 @@
+- name: Ensure dnf-plugins-core is installed
+  become: yes
+  dnf:
+    name:
+      - dnf-plugins-core
+    state: present
+
+- name: Add brave repo
+  command: dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+  become: yes
+
+- name: rpm import
+  command: rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+  become: yes
+
+- name: Install brave browser
+  dnf:
+    name:
+      - brave-browser
+    state: present
+  become: yes

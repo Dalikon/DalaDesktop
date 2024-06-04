@@ -39,5 +39,6 @@
   roles:
     - role: DEandWM
     - role: BasePrograms
+    - role: BraveBrowser
 
 

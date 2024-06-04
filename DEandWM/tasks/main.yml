@@ -31,9 +31,7 @@
       - autoconf
       - automake
       - libtool
-        #- intltool
-
-
+    state: present
 
 - name: Clone i3-glibc
   git:
