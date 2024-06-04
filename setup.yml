@@ -33,7 +33,12 @@
 
     - name: Copy bashrc
       copy:
-        src: "./.bashrc"
+        src: "./CpToHome/.bashrc"
+        dest: "/home/{{ user }}/"
+
+    - name: Copy dircolors
+      copy:
+        src: "./CpToHome/.bashrc"
         dest: "/home/{{ user }}/"
 
   roles:
