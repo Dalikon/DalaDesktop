@@ -11,7 +11,7 @@
       - firefox
       - redshift-gtk
       - gimp
-      - freecad
+        #- freecad
       - obs-studio
       - cheese
     state: present
