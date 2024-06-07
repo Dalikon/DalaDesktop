@@ -12,5 +12,6 @@
     state: file
 
 - name: Run the .AppImage file
+  become: yes
   command: /tmp/Ultimaker_Cura-5.4.0.AppImage --appimage-extract-and-run
 
