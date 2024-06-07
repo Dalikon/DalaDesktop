@@ -1,0 +1,20 @@
+---
+- name: Install Obsidian using Flatpak
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure Flatpak is installed
+      dnf:
+        name: flatpak
+        state: present
+
+    - name: Add the Flathub repository
+      command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      args:
+        creates: /var/lib/flatpak/repo/flathub.flatpakrepo
+
+    - name: Install Obsidian
+      command: flatpak install -y flathub md.obsidian.Obsidian
+      args:
+        creates: /var/lib/flatpak/appstream/md.obsidian.Obsidian
+

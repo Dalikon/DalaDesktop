@@ -1,4 +1,4 @@
-- name: install the basic programs
+- name: Install the base programs
   become: yes
   dnf:
     name:
@@ -10,6 +10,10 @@
       - neovim
       - firefox
       - redshift-gtk
+      - gimp
+      - freecad
+      - obs-studio
+      - cheese
     state: present
 
 - name: Create .vim folder

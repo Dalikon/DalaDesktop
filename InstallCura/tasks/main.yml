@@ -1,0 +1,16 @@
+---
+- name: Download Ultimaker Cura .AppImage
+  get_url:
+    url: "https://github.com/Ultimaker/Cura/releases/download/5.4.0/Ultimaker_Cura-5.4.0.AppImage"
+    dest: /tmp/Ultimaker_Cura-5.4.0.AppImage
+    mode: '0755'
+
+- name: Make the .AppImage file executable
+  file:
+    path: /tmp/Ultimaker_Cura-5.4.0.AppImage
+    mode: '0755'
+    state: file
+
+- name: Run the .AppImage file
+  command: /tmp/Ultimaker_Cura-5.4.0.AppImage --appimage-extract-and-run
+
