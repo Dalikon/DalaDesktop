@@ -41,6 +41,16 @@
         src: "./CpToHome/.dircolors"
         dest: "/home/{{ user }}/"
 
+    - name: create picture folder
+      file:
+        path: "/home/{{ user }}/Pictures"
+        state: directory
+
+    - name: copy backgrounds
+      copy:
+        src: "./Backgrounds/"
+        dest: "/home/{{ user }}/Pictures"
+
   roles:
     - role: DEandWM
     - role: BasePrograms
