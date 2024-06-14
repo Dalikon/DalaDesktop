@@ -15,6 +15,7 @@
       - obs-studio
       - cheese
       - prusa-slicer
+      - gthumb
     state: present
 
 - name: Create .vim folder
