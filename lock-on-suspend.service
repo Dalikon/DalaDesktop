@@ -1,0 +1,11 @@
+[Unit]
+Description=Lock screen when waking up
+Before=nvidia-suspend.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/Suspend.sh
+
+[Install]
+WantedBy=nvidia-suspend.service 
+

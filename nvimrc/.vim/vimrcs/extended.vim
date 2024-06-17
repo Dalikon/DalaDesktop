@@ -25,11 +25,12 @@ set background=dark
 " colorscheme peaksea
 syntax on
 colorscheme deep-space
-let g:airline_theme='deep_space'
+"colorscheme peaksea
+"let g:airline_theme='deep_space'
 "let g:lightline = {
-"      \ 'colorscheme': 'deepspace',
-"      \ }
-let g:deepspace_italics=1
+"\ 'colorscheme': 'deepspace',
+"\ }
+"let g:deepspace_italics=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs

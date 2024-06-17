@@ -93,3 +93,18 @@
       - 'i3status*'
       - i3lock
     state: absent
+
+- name: move the suspend script
+  copy:
+    src: ./Suspend.sh
+    dest: /usr/local/bin/
+
+- name: move the service
+  copy:
+    src: ./lock-on-suspend.service
+    dest: /etc/systemd/system/lock-on-suspend.service
+
+- name: enable the service
+  systemd:
+    name: lock-on-suspend.service
+    enabled: yes

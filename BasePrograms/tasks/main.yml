@@ -16,6 +16,8 @@
       - cheese
       - prusa-slicer
       - gthumb
+      - snapd
+      - gnome-calculator
     state: present
 
 - name: Create .vim folder

@@ -101,5 +101,8 @@ Plug 'SmiteshP/nvim-navic'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'jamestthompson3/nvim-remote-containers'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 call plug#end()
 
