@@ -24,7 +24,7 @@
     - name: Create the .config directory
       file:
         src: ".config"
-        path: "/home/{{ user }}/"
+        path: "/home/{{ user }}/.config"
         state: link
 
     - name: Copy bashrc
