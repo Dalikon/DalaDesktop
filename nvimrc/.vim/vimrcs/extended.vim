@@ -22,15 +22,16 @@ set guioptions-=L
 
 " Colorscheme
 set background=dark
-" colorscheme peaksea
 syntax on
-colorscheme deep-space
+"colorscheme deep-space
 "colorscheme peaksea
-"let g:airline_theme='deep_space'
-"let g:lightline = {
-"\ 'colorscheme': 'deepspace',
-"\ }
-"let g:deepspace_italics=1
+colorscheme onedark
+
+let g:airline_theme='onedark'
+let g:lightline = {
+\ 'colorscheme': 'onedark',
+\ }
+let g:deepspace_italics=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs

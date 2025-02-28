@@ -3,6 +3,7 @@
   dnf:
     name: 
       - '@xfce-desktop-environment'
+      - xfce4-screensaver
     state: present
 
 - name: Change default target to graphical.target
@@ -36,75 +37,58 @@
 - name: Clone i3-glibc
   git:
     repo: "https://github.com/altdesktop/i3ipc-glib"
-    dest: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+    dest: "./InstallRepos/i3ipc-glibc"
     version: "master"  # or any other branch/tag/commit
     update: yes
 
 - name: reconfigure
   command: autoreconf -vfi
   args:
-    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 - name: Run ./autogen for i3-glibc
   command: ./autogen.sh --prefix=/usr
   args:
-    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 - name: Run make for i3-glibc
   command: make
   args:
-    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 - name: Run sudo make install for i3ipc-glibc
   become: yes
   command: sudo make install
   args:
-    chdir: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+    chdir: "./InstallRepos/i3ipc-glibc"
 
 
 - name: Clone xfce4-i3-workspaces-plugin
   git:
     repo: "https://github.com/denesb/xfce4-i3-workspaces-plugin.git"
-    dest: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+    dest: "./InstallRepos/xfce4-i3-workspaces-plugin"
     version: "master"  # or any other branch/tag/commit
     update: yes
 
 - name: Run ./autogen for workspaces plugin
   command: ./autogen.sh --prefix=/usr
   args:
-    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
 
 - name: Run make for workspaces plugin
   command: make
   args:
-    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
 
 - name: Run sudo make install for i3ipc-glibc
   command: sudo make install
   args:
-    chdir: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+    chdir: "./InstallRepos/xfce4-i3-workspaces-plugin"
 
-- name: Uninstall xfwm4, xfdesktop, i3status a i3lock
+- name: Uninstall i3status a i3lock
   become: yes
   dnf:
     name:
-      - xfwm4
-      - xfdesktop
       - 'i3status*'
       - i3lock
     state: absent
-
-- name: move the suspend script
-  copy:
-    src: ./Suspend.sh
-    dest: /usr/local/bin/
-
-- name: move the service
-  copy:
-    src: ./lock-on-suspend.service
-    dest: /etc/systemd/system/lock-on-suspend.service
-
-- name: enable the service
-  systemd:
-    name: lock-on-suspend.service
-    enabled: yes

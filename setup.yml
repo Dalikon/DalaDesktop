@@ -8,38 +8,36 @@
   pre_tasks:
     - name: Create folder for repos needed
       file:
-        path: "/home/{{ user }}/InstallRepos"
+        path: "./InstallRepos"
         state: directory
   
     - name: Create folder for i3-glibc
       file:
-        path: "/home/{{ user }}/InstallRepos/i3ipc-glibc"
+        path: "./InstallRepos/i3ipc-glibc"
         state: directory
         
     - name: create folder for xfce4-i3-workspaces-plugin
       file:
-        path: "/home/{{ user }}/InstallRepos/xfce4-i3-workspaces-plugin"
+        path: "./InstallRepos/xfce4-i3-workspaces-plugin"
         state: directory
     
     - name: Create the .config directory
       file:
+        src: "./configs"
         path: "/home/{{ user }}/.config"
-        state: directory
-
-    - name: Place the configs
-      copy:
-        src: "./configs/"
-        dest: "/home/{{ user }}/.config/"
+        state: link
 
     - name: Copy bashrc
-      copy:
+      file:
         src: "./CpToHome/.bashrc"
-        dest: "/home/{{ user }}/"
+        dest: "/home/{{ user }}/.bashrc"
+        state: link
 
     - name: Copy dircolors
-      copy:
+      file:
         src: "./CpToHome/.dircolors"
-        dest: "/home/{{ user }}/"
+        dest: "/home/{{ user }}/.dircolors"
+        state: link
 
     - name: create picture folder
       file:
@@ -56,4 +54,3 @@
     - role: BasePrograms
     - role: BraveBrowser
     - role: InstallObsidian
-    - role: InstallCura

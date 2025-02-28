@@ -176,7 +176,7 @@ let g:EasyMotion_smartcase = 1
 map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
+map <Leader>h <Plug>(easymotion-linebackward)Plug 'robert-oleynik/clangd-nvim'
 map <Leader>w <Plug>(easymotion-w)
 map <Leader>b <Plug>(easymotion-b)
 map <Leader>. <Plug>(easymotion-repeat)
@@ -372,7 +372,6 @@ function! s:show_documentation()
     execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
-
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -573,7 +572,55 @@ map <leader>r :Ranger<CR>
 " => LSP
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 lua << EOF
---require'lspconfig'.pyright.setup{}
+--local clangd_nvim = require'clangd_nvim'
+
+require'lspconfig'.clangd.setup{}
+--    capabilities = {
+--        textDocument = {
+--            semanticHighlightingCapabilities = {
+--                semanticHighlighting = true
+--            }
+--        }
+--    },
+--    on_init = clangd_nvim.on_init
+--}
+
+require'nvim-treesitter.configs'.setup {
+    highlight = {
+        enable = true,              -- false will disable the whole extension
+        disable = {},              -- list of language that will be disabled        
+        additional_vim_regex_highlighting = false,
+    },
+    ensure_installed = { "cpp" },
+}
+
 
 EOF
+
+let g:jukit_notebook_viewer = 'code'
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+nnoremap <leader>gc <cmd>lua require'telescope.builtin'.git_commits{}<cr>
+nnoremap <leader>gb <cmd>lua require'telescope.builtin'.git_branches{}<cr>
+nnoremap <leader>gs <cmd>lua require'telescope.builtin'.git_status{}<cr>
+nnoremap <leader>trs <cmd>lua require'telescope.builtin'.treesitter{}<cr>
+
+command! Gstatus Git status
+command! Gcommit Git commit
+command! Gpush Git push
+command! Gpull Git pull
+command! Gadd Git add
+
+" Remap GitGutter commands
+" nnoremap <leader>gn ]c          " Jump to next hunk
+" nnoremap <leader>gp [c          " Jump to previous hunk
+" nnoremap <leader>gs :GitGutterStageHunk<CR> " Stage the current hunk
+" nnoremap <leader>gu :GitGutterUndoHunk<CR>  " Undo the current hunk
+" nnoremap <leader>gpv :GitGutterPreviewHunk<CR> " Preview the current hunk
+" nnoremap <leader>gd :GitGutterDiff<CR>      " Diff the current hunk
 

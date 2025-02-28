@@ -18,20 +18,27 @@
       - gthumb
       - snapd
       - gnome-calculator
+      - xprop
+      - xdotool
+      - pip
+      - prusa-slicer
+      - solaar
+      - krita
     state: present
 
-- name: Create .vim folder
+- name: Create .vim link
   file:
-    path: "/home/{{ user }}/.vim"
-    state: directory
-
-- name: Copy nvimrc to the computer
-  copy:
-    src: "./nvimrc/.vim/"
+    src: "./nvimrc/.vim"
     dest: "/home/{{ user }}/.vim"
+    state: link
 
 - name: Download vimplug
   command: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 - name: install nvim plugins
   command: nvim +PlugInstall +qall
+
+- name: install markdown plugin
+  command: nvim +call\ mkdp#util#install()
+
+

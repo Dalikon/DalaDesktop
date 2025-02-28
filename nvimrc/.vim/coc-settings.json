@@ -45,5 +45,13 @@
     "rust-analyzer.inlayHints.enable": false,
     "rust-analyzer.hoverActions.linksInHover": true, 
     "hover.floatMaxHeight": 20 ,
-    "hover.floatMaxWidth": 80
+    "hover.floatMaxWidth": 80,
+  "suggest.autoTrigger": "always", // Trigger completion automatically (other options: "none", "trigger")
+  "suggest.enablePreselect": false, // Pre-select the first suggestion
+  "suggest.minTriggerInputLength": 1, // Minimum number of characters before showing suggestions
+  "suggest.snippetsSupport": true, // Enable snippets in the completion list
+  "suggest.noselect": true, // Whether to prevent selecting a suggestion by default
+  "suggest.triggerAfterInsertEnter": true, // Trigger completion after entering insert mode
+  "suggest.floatEnable": true, // Display the completion menu as a floating window
+  "coc.preferences.useQuickfixForLocations": false // Show results in the location list instead of quickfix
 }
