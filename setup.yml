@@ -8,23 +8,23 @@
   pre_tasks:
     - name: Create folder for repos needed
       file:
-        path: "{{ ansible_env.PWD }}/InstallRepos"
+        path: "/home/{{ user }}/DalaDesktop/InstallRepos"
         state: directory
   
     - name: Create folder for i3-glibc
       file:
-        path: "{{ ansible_env.PWD }}/InstallRepos/i3ipc-glibc"
+        path: "/home/{{ user }}/DalaDesktop/InstallRepos/i3ipc-glibc"
         state: directory
         
     - name: create folder for xfce4-i3-workspaces-plugin
       file:
-        path: "{{ ansible_env.PWD }}/InstallRepos/xfce4-i3-workspaces-plugin"
+        path: "/home/{{ user }}/DalaDesktop/InstallRepos/xfce4-i3-workspaces-plugin"
         state: directory
     
     - name: Create the .config directory
       file:
-        src: "{{ ansible_env.PWD }}/.config"
-        path: "/home/{{ user }}/.config"
+        src: "/home/{{ user }}/DalaDesktop/.config"
+        dest: "/home/{{ user }}/.config"
         state: link
 
     - name: Ensure that bashrc is not already present
@@ -34,13 +34,13 @@
 
     - name: Copy bashrc
       file:
-        src: "{{ ansible_env.PWD }}/CpToHome/.bashrc"
+        src: "/home/{{ user }}/DalaDesktop/CpToHome/.bashrc"
         dest: "/home/{{ user }}/.bashrc"
         state: link
 
     - name: Copy dircolors
       file:
-        src: "{{ ansible_env.PWD }}/CpToHome/.dircolors"
+        src: "/home/{{ user }}/DalaDesktop/CpToHome/.dircolors"
         dest: "/home/{{ user }}/.dircolors"
         state: link
 
@@ -51,7 +51,7 @@
 
     - name: copy backgrounds
       copy:
-        src: "{{ ansible_env.PWD }}/Backgrounds/"
+        src: "/home/{{ user }}/DalaDesktop/Backgrounds/"
         dest: "/home/{{ user }}/Pictures"
 
   roles:

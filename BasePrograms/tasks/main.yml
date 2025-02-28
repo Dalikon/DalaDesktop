@@ -28,7 +28,7 @@
 
 - name: Create .vim link
   file:
-    src: "./nvimrc/.vim"
+    src: "{{ ansible_env.PWD }}/nvimrc/.vim"
     dest: "/home/{{ user }}/.vim"
     state: link
 
