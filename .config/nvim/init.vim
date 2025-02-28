@@ -11,24 +11,14 @@ try
 catch
 endtry 
 
+syntax on
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 let g:latex_to_unicode_tab = ""
+echom "NERDTree Loaded: " . exists('g:loaded_nerdtree')
 
-lua << EOF
-local nvim_lsp_clangd_highlight = require'nvim-lsp-clangd-highlight'
 
-require'lspconfig'.clangd.setup{
-    capabilities = {
-        textDocument = {
-            semanticHighlightingCapabilities = {
-                semanticHighlighting = true
-            }
-        }
-    },
-    on_init = nvim_lsp_clangd_highlight.on_init
-}
-EOF
