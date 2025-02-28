@@ -23,7 +23,7 @@
     
     - name: Create the .config directory
       file:
-        src: ".config"
+        src: "./config"
         path: "/home/{{ user }}/.config"
         state: link
 
