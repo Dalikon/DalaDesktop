@@ -27,6 +27,11 @@
         path: "/home/{{ user }}/.config"
         state: link
 
+    - name: Ensure that bashrc is not already present
+      filr:
+        path: "/home/{{ user }}/.bashrc"
+        state: absent
+
     - name: Copy bashrc
       file:
         src: "{{ ansible_env.PWD }}/CpToHome/.bashrc"
