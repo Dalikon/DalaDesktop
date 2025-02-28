@@ -14,7 +14,7 @@ function main() {
   sudo dnf install -y git ansible
   # Clone the Ansible playbook and run it cd "${HOME}"
   mkdir -p "${PROJECTS_DIR}"
-  ansible-pull -U "${PLAYBOOK_REPO}" -i localhost, "${PLAYBOOK}" --ask-become-pass
+  ansible-pull -U "${PLAYBOOK_REPO}" -i localhost, "${PLAYBOOK}" --ask-become-pass -vv
 }
 
 # Run the script
