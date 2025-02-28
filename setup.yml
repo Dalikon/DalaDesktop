@@ -28,7 +28,7 @@
         state: link
 
     - name: Ensure that bashrc is not already present
-      filr:
+      file:
         path: "/home/{{ user }}/.bashrc"
         state: absent
 
