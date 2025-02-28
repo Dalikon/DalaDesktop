@@ -5,7 +5,7 @@ set -o nounset # Disallow expansion of unset variables
 set -o pipefail # Use last non-zero exit code in a pipeline
 
 # Define constants
-readonly PROJECTS_DIR=DalaDesktopAnsible
+readonly PROJECTS_DIR=DalaDesktop
 readonly PLAYBOOK_REPO="https://github.com/Dalikon/DalaDesktop"
 readonly PLAYBOOK=setup.yml
 
