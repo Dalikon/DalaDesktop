@@ -59,6 +59,21 @@ map <leader>nb :NERDTreeFromBookmark<Space>
 map <leader>nf :NERDTreeFind<cr>
 map <leader>ff :NERDTreeFind<cr>
 
+" Automatically open NERDTree when starting Vim or opening a file
+autocmd VimEnter * if argc() > 0 | execute 'NERDTree' | execute 'wincmd p' | endif
+autocmd VimEnter * if argc() == 0 | NERDTree | endif
+
+"Ensure NERDTree stays open when opening files from it
+autocmd FileType nerdtree setlocal bufhidden=wipe
+let g:NERDTreeQuitOnOpen = 0
+
+" Remap 't' to open the file in a new tab but keep NERDTree open
+autocmd FileType nerdtree nnoremap <buffer> t :tabnew <C-r>=expand('<cfile>')<CR><CR>:NERDTreeFind<CR>
+
+" Automatically open NERDTree when switching to an empty buffer
+autocmd BufWinEnter * if bufname() == "" && !&modifiable && &filetype !=# 'nerdtree' | NERDTree | endif
+
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-multiple-cursors

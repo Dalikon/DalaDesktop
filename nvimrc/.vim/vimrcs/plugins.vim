@@ -124,6 +124,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'andweeb/presence.nvim'
 
+Plug 'tpope/vim-surround'
+
 " Plug 'luk400/vim-jukit'
 call plug#end()
 
