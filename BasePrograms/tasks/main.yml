@@ -43,7 +43,7 @@
 - name: install nvim plugins
   command: nvim +PlugInstall +qall
 
-- name: install markdown plugin
-  command: nvim +call\ mkdp#util#install()
+  #- name: install markdown plugin
+  #  command: nvim +call\ mkdp#util#install()
 
 
