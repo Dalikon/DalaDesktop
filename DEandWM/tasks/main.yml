@@ -104,3 +104,4 @@
     name:
       - xfwm4
     state: absent
+  become: true
