@@ -105,5 +105,7 @@
       - xfwm4
       - xfwm4-themes
       - xfdesktop
+      - xfce4-screensaver
+      - greybird-xfwm4-theme
     state: absent
   become: true
