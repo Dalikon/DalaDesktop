@@ -6,12 +6,12 @@
     state: present
 
 - name: Add brave repo
-  command: dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+  command: dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
   become: yes
 
-- name: rpm import
-  command: rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-  become: yes
+  #- name: rpm import
+  #command: rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+  #become: yes
 
 - name: Install brave browser
   dnf:
