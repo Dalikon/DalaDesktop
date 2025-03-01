@@ -9,12 +9,14 @@ gaps inner 5
 gaps outer 5
 
 
+#exec_always setxkbmap -layout cz -variant qwerty
 exec_always setxkbmap -layout cz -variant coder
 exec_always --no-startup-id killall /usr/lib64/xfce4/panel/wrapper-2.0
-bindsym $mod+x exec ~/.config/i3/lock.sh
-bindsym $mod+$mod2+x exec ~/.config/i3/lock.sh && systemctl suspend
-# change keyboard layout
-# bindsym $mod+space exec setxkbmap -layout
+
+#bindsym $mod+x exec ~/.config/i3/lock.sh
+#bindsym $mod+$mod2+x exec ~/.config/i3/lock.sh && systemctl suspend
+bindsym $mod+x exec xfce4-screensaver-command -l
+bindsym $mod+$mod2+x exec systemctl suspend
 
 # Start browsers
 bindsym $mod+b exec brave-browser
@@ -133,14 +135,14 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        # Pressing right will shrink the window’s width.
+        # Pressing left will grow the window’s width.
+        # Pressing down will shrink the window’s height.
+        # Pressing up will grow the window’s height.
+        bindsym k resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym semicolon resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt

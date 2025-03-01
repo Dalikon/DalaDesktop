@@ -109,3 +109,16 @@
       - greybird-xfwm4-theme
     state: absent
   become: true
+
+- name: Ensure XFCE keyboard layout is set to Czech
+  command: xfconf-query -c keyboard-layout -p /Default/XkbLayout -s cz
+  changed_when: false
+
+- name: Ensure XFCE keyboard variant is set to Coder
+  command: xfconf-query -c keyboard-layout -p /Default/XkbVariant -s coder
+  changed_when: false
+
+- name: Install xfce4-screensaver
+  dnf:
+    name: xfce4-screensaver
+    state: present
