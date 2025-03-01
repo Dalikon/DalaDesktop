@@ -47,7 +47,10 @@ Plug 'vim-erlang/vim-erlang-omnicomplete'
 Plug 'mattn/emmet-vim'
 Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown', { 'do': 'call mkdp#util#install()' }
+
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'fatih/vim-hclfmt'
 Plug 'uarun/vim-protobuf'
