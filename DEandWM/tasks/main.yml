@@ -93,7 +93,14 @@
       - i3lock
     state: absent
 
-- name: COpy the xfce4-session file without with i3 to dest
+- name: Copy the xfce4-session file without with i3 to dest
   copy:
     src: ./xfce4-session.xml
     dest: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/
+  become: true
+
+- name: Remove xfwm4
+  dnf:
+    name:
+      - xfwm4
+    state: absent
