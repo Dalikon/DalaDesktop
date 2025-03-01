@@ -17,7 +17,7 @@ Plug 'junegunn/gv.vim'
 Plug 'machakann/vim-highlightedyank'
 
 " golang development
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " use coc-settings.json
 Plug 'buoto/gotests-vim'
