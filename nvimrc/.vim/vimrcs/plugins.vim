@@ -49,7 +49,7 @@ Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
 " Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
-Plug 'preservim/vim-markdown', { 'do': 'call mkdp#util#install()' }
+Plug 'preservim/vim-markdown'", { 'do': 'nvim +call\ mkdp#util#install()' }
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'fatih/vim-hclfmt'
