@@ -103,5 +103,7 @@
   dnf:
     name:
       - xfwm4
+      - xfwm4-themes
+      - xfdesktop
     state: absent
   become: true
