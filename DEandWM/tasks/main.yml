@@ -122,3 +122,4 @@
   dnf:
     name: xfce4-screensaver
     state: present
+  become: true
