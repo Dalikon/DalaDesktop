@@ -17,7 +17,7 @@ Plug 'junegunn/gv.vim'
 Plug 'machakann/vim-highlightedyank'
 
 " golang development
-" Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " use coc-settings.json
 Plug 'buoto/gotests-vim'
@@ -47,10 +47,7 @@ Plug 'vim-erlang/vim-erlang-omnicomplete'
 Plug 'mattn/emmet-vim'
 Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
-" Plug 'plasticboy/vim-markdown'
-Plug 'godlygeek/tabular'
-Plug 'preservim/vim-markdown'", { 'do': 'nvim +call\ mkdp#util#install()' }
-
+Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'fatih/vim-hclfmt'
 Plug 'uarun/vim-protobuf'
@@ -71,7 +68,7 @@ Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'jlanzarotta/bufexplorer'
 Plug 'Asheq/close-buffers.vim'
 Plug 'mileszs/ack.vim'
-Plug 'dense-analysis/ale'
+"Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
@@ -128,6 +125,11 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'andweeb/presence.nvim'
 
 Plug 'tpope/vim-surround'
+
+Plug 'chrisbra/csv.vim'
+Plug 'godlygeek/tabular'
+
+
 
 " Plug 'luk400/vim-jukit'
 call plug#end()

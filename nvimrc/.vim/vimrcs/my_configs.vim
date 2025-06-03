@@ -182,4 +182,14 @@ au BufNewFile,BufRead *.v,*.vh	setf vlang
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  others settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+silent! aunmenu PopUp.Go\ to\ definition
+silent! aunmenu PopUp.Open\ in\ web\ browser
+silent! aunmenu PopUp.Show\ Diagnostics
+silent! aunmenu PopUp.Show\ All\ Diagnostics
+silent! aunmenu PopUp.Configure\ Diagnostics
 
+amenu PopUp.Go\ to\ definition :call CocActionAsync('definition')<CR>
+amenu PopUp.Open\ in\ web\ browser :echo "Not implemented"<CR>
+amenu PopUp.Show\ Diagnostics :CocDiagnostics<CR>
+amenu PopUp.Show\ All\ Diagnostics :CocList diagnostics<CR>
+amenu PopUp.Configure\ Diagnostics :CocConfig<CR>
