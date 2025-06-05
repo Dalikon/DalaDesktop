@@ -21,7 +21,6 @@
       - krita
       - go
       - virt-manager
-      - @virtualization
     state: present
 
 - name: Create .vim link
