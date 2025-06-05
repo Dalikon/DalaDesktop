@@ -2,16 +2,11 @@
   become: yes
   dnf:
     name:
-      - alacritty
-      - xfce4-whiskermenu-plugin
-      - xfce4-systemload-plugin
-      - picom
-      - nitrogen
       - neovim
       - firefox
-      - redshift-gtk
       - gimp
         #- freecad
+      - balena
       - obs-studio
       - cheese
       - prusa-slicer
@@ -25,6 +20,8 @@
       - solaar
       - krita
       - go
+      - virt-manager
+      - @virtualization
     state: present
 
 - name: Create .vim link
