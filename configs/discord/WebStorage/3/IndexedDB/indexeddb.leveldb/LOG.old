@@ -1,0 +1,7 @@
+2025/06/03-00:01:51.801 1b1ee Reusing MANIFEST /home/dala/.config/discord/WebStorage/3/IndexedDB/indexeddb.leveldb/MANIFEST-000001
+2025/06/03-00:01:51.801 1b1ee Recovering log #4
+2025/06/03-00:01:51.801 1b1ee Reusing old log /home/dala/.config/discord/WebStorage/3/IndexedDB/indexeddb.leveldb/000004.log 
+2025/06/03-00:01:51.825 1b20f Level-0 table #8: started
+2025/06/03-00:01:51.830 1b20f Level-0 table #8: 2026 bytes OK
+2025/06/03-00:01:51.840 1b20f Delete type=0 #4
+2025/06/03-00:01:51.840 1b1ee Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)

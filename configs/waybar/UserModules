@@ -1,0 +1,17 @@
+//* ---- 💫 https://github.com/JaKooLit 💫 ---- *//
+/* Waybar Modules Extras */
+
+/* This is where you can add Extra Modules you wish. copy.sh will try to restore*/
+/* this file along with the unique configs and styles. */
+/* IMPORTANT, be mindful with , or ". else waybar will not start */
+
+{
+"custom/power2": {
+	"format": " ⏻ ",
+	"on-click": "rofi -show power-menu -modi power-menu:rofi-power-menu",
+	"on-click-right": "$HOME/.config/hypr/scripts/ChangeBlur.sh",
+	"tooltip": true,
+	"tooltip-format": "Left Click: Logout Menu\nRight Click: Change Blur"
+}
+
+}

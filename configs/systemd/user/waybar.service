@@ -1,0 +1,15 @@
+[Unit]
+Description=Waybar status bar
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/waybar
+Restart=on-failure
+RestartSec=2
+Environment=PATH=/usr/bin:/bin:/usr/local/bin
+# Optional: Don't inherit environment from systemd
+EnvironmentFile=-%E/HOME/.config/waybar/env
+
+[Install]
+WantedBy=default.target
+

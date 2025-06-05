@@ -1,0 +1,93 @@
+- name: Download JaKoolit's fedora hyprland installer
+  get_url:
+    url: 'https://raw.githubusercontent.com/JaKooLit/Fedora-Hyprland/main/auto-install.sh'
+    dest: '/tmp/jakoolit-installer.sh'
+    mode: '0755'
+
+- name: Run JaKooLits Fedora-Hyprland installer script
+  shell: '/tmp/jakoolit-installer.sh'
+  args:
+    executable: /bin/bash
+
+- name: Install packages needed for this instalation to function outside JaKooLits script
+  become: yes
+  dnf:
+    name:
+      - hyprpm
+      - hyprsunset
+      - cargo
+      - cmake
+      - meson
+      - cpio
+      - pkg-config
+      - g++
+      - gcc
+      - aquamarine-devel
+      - hyprlang-devel
+      - hyprcursor-devel
+      - hyprutils-devel
+      - hyprgraphics-devel
+      - wayland-protocols-devel
+      - libdrm-devel
+      - libinput-devel
+      - re2-devel
+      - mesa-libgbm-devel
+      - libuuid-devel
+      - hyprwayland-scanner
+      - xcb-util-wm-devel
+      - xcb-util-errors-devel
+      - tomlplusplus-devel
+    state: present
+
+- name: Backup Dala configs
+  copy:
+    src: "/home/{{ user }}/DalaDesktop/configs"
+    dest: "/home/{{ user }}/DalaDesktop/configs-Dala-backup"
+    recursive: yes
+
+- name: Backup original configs
+  copy:
+    src: "/home/{{ user }}/.config"
+    dest: "/home/{{ user }}/configs-orig-backup"
+
+- name: Symlink configs to ~/.config
+  file:
+    src: "/home/{{ user }}/DalaDesktop/configs"
+    dest: "/home/{{ user }}/.config"
+    state: link
+
+- name: Update hyprpm
+  command: hyprpm update
+
+- name: Add hy3 plugin using hyprpm
+  command: hyprpm add https://github.com/outfoxxed/hy3
+
+- name: Enable hy3 plugin
+  command: hyprpm enable hy3
+
+- name: Create folder for sunset repository
+  file:
+    path: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+
+- name: Clone sunsetr repository
+  git:
+    repo: https://github.com/psi4j/sunsetr.git
+    dest: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+
+- name: Build sunsetr
+  command: cargo build --release
+
+- name: Install sunsetr
+  copy:
+    src: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr/target/release/sunsetr"
+    dest: "/usr/local/bin/"
+
+- name: Reaload systemd daemons
+  systemd:
+    daemon_reload: true
+
+- name: Enable the monitor-watcher service
+  systemd:
+    name: monitor-watcher.service
+    state: started
+    enabled: true

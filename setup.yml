@@ -11,15 +11,15 @@
         path: "/home/{{ user }}/DalaDesktop/InstallRepos"
         state: directory
   
-    - name: Create folder for i3-glibc
-      file:
-        path: "/home/{{ user }}/DalaDesktop/InstallRepos/i3ipc-glibc"
-        state: directory
+    #- name: Create folder for i3-glibc
+    #  file:
+    #    path: "/home/{{ user }}/DalaDesktop/InstallRepos/i3ipc-glibc"
+    #    state: directory
         
-    - name: create folder for xfce4-i3-workspaces-plugin
-      file:
-        path: "/home/{{ user }}/DalaDesktop/InstallRepos/xfce4-i3-workspaces-plugin"
-        state: directory
+    #- name: create folder for xfce4-i3-workspaces-plugin
+    #  file:
+    #    path: "/home/{{ user }}/DalaDesktop/InstallRepos/xfce4-i3-workspaces-plugin"
+    #    state: directory
     
     - name: Create the .config directory
       file:
@@ -46,16 +46,16 @@
 
     - name: create picture folder
       file:
-        path: "/home/{{ user }}/Pictures"
+        path: "/home/{{ user }}/Pictures/wallpapers"
         state: directory
 
     - name: copy backgrounds
       copy:
         src: "/home/{{ user }}/DalaDesktop/Backgrounds/"
-        dest: "/home/{{ user }}/Pictures"
+        dest: "/home/{{ user }}/Pictures/wallpapers"
 
   roles:
-    - role: DEandWM
+    - role: Hyprland
     - role: BasePrograms
     - role: BraveBrowser
     - role: InstallObsidian

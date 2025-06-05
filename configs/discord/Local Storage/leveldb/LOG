@@ -1,0 +1,75 @@
+2025/06/04-20:53:40.160 29c76 Reusing MANIFEST /home/dala/.config/discord/Local Storage/leveldb/MANIFEST-000001
+2025/06/04-20:53:40.163 29c76 Recovering log #322
+2025/06/04-20:53:40.164 29c76 Reusing old log /home/dala/.config/discord/Local Storage/leveldb/000322.log 
+2025/06/04-20:57:11.111 29c77 Level-0 table #328: started
+2025/06/04-20:57:11.132 29c77 Level-0 table #328: 1082981 bytes OK
+2025/06/04-20:57:11.138 29c77 Delete type=0 #322
+2025/06/04-21:14:41.406 29c77 Level-0 table #330: started
+2025/06/04-21:14:41.410 29c77 Level-0 table #330: 32542 bytes OK
+2025/06/04-21:14:41.416 29c77 Delete type=0 #327
+2025/06/04-21:35:41.406 29c77 Level-0 table #332: started
+2025/06/04-21:35:41.410 29c77 Level-0 table #332: 31841 bytes OK
+2025/06/04-21:35:41.415 29c77 Delete type=0 #329
+2025/06/04-21:43:41.407 29c77 Level-0 table #334: started
+2025/06/04-21:43:41.411 29c77 Level-0 table #334: 32937 bytes OK
+2025/06/04-21:43:41.416 29c77 Delete type=0 #331
+2025/06/04-21:43:41.417 29c77 Compacting 4@0 + 2@1 files
+2025/06/04-21:43:41.439 29c77 Generated table #335@0: 26 keys, 2533105 bytes
+2025/06/04-21:43:41.476 29c77 Generated table #336@0: 113 keys, 2122358 bytes
+2025/06/04-21:43:41.477 29c77 Compacted 4@0 + 2@1 files => 4655463 bytes
+2025/06/04-21:43:41.482 29c77 compacted to: files[ 0 3 1 0 0 0 0 ]
+2025/06/04-21:43:41.482 29c77 Delete type=2 #324
+2025/06/04-21:43:41.483 29c77 Delete type=2 #325
+2025/06/04-21:43:41.483 29c77 Delete type=2 #328
+2025/06/04-21:43:41.483 29c77 Delete type=2 #330
+2025/06/04-21:43:41.483 29c77 Delete type=2 #332
+2025/06/04-21:43:41.483 29c77 Delete type=2 #334
+2025/06/04-22:29:02.105 29c77 Level-0 table #338: started
+2025/06/04-22:29:02.109 29c77 Level-0 table #338: 34956 bytes OK
+2025/06/04-22:29:02.115 29c77 Delete type=0 #333
+2025/06/05-17:01:25.995 29c77 Level-0 table #340: started
+2025/06/05-17:01:25.999 29c77 Level-0 table #340: 55488 bytes OK
+2025/06/05-17:01:26.005 29c77 Delete type=0 #337
+2025/06/05-17:58:04.168 29c77 Level-0 table #342: started
+2025/06/05-17:58:04.196 29c77 Level-0 table #342: 54461 bytes OK
+2025/06/05-17:58:04.200 29c77 Delete type=0 #339
+2025/06/05-18:18:00.459 29c77 Level-0 table #344: started
+2025/06/05-18:18:00.466 29c77 Level-0 table #344: 37852 bytes OK
+2025/06/05-18:18:00.480 29c77 Delete type=0 #341
+2025/06/05-18:18:00.480 29c77 Compacting 4@0 + 2@1 files
+2025/06/05-18:18:00.515 29c77 Generated table #345@0: 26 keys, 2533105 bytes
+2025/06/05-18:18:00.556 29c77 Generated table #346@0: 113 keys, 2122578 bytes
+2025/06/05-18:18:00.557 29c77 Compacted 4@0 + 2@1 files => 4655683 bytes
+2025/06/05-18:18:00.569 29c77 compacted to: files[ 0 3 1 0 0 0 0 ]
+2025/06/05-18:18:00.569 29c77 Delete type=2 #335
+2025/06/05-18:18:00.569 29c77 Delete type=2 #336
+2025/06/05-18:18:00.569 29c77 Delete type=2 #338
+2025/06/05-18:18:00.569 29c77 Delete type=2 #340
+2025/06/05-18:18:00.569 29c77 Delete type=2 #342
+2025/06/05-18:18:00.569 29c77 Delete type=2 #344
+2025/06/05-18:48:28.015 29c77 Level-0 table #348: started
+2025/06/05-18:48:28.019 29c77 Level-0 table #348: 60530 bytes OK
+2025/06/05-18:48:28.025 29c77 Delete type=0 #343
+2025/06/05-19:22:59.168 29c77 Level-0 table #350: started
+2025/06/05-19:22:59.172 29c77 Level-0 table #350: 56668 bytes OK
+2025/06/05-19:22:59.180 29c77 Delete type=0 #347
+2025/06/05-19:31:33.851 29c76 Level-0 table #352: started
+2025/06/05-19:31:33.855 29c76 Level-0 table #352: 56887 bytes OK
+2025/06/05-19:31:33.861 29c76 Delete type=0 #349
+2025/06/05-19:41:44.593 29c76 Level-0 table #354: started
+2025/06/05-19:41:44.597 29c76 Level-0 table #354: 56801 bytes OK
+2025/06/05-19:41:44.602 29c76 Delete type=0 #351
+2025/06/05-19:41:44.603 29c76 Compacting 4@0 + 2@1 files
+2025/06/05-19:41:44.625 29c76 Generated table #355@0: 26 keys, 2533105 bytes
+2025/06/05-19:41:44.657 29c76 Generated table #356@0: 113 keys, 2121606 bytes
+2025/06/05-19:41:44.658 29c76 Compacted 4@0 + 2@1 files => 4654711 bytes
+2025/06/05-19:41:44.663 29c76 compacted to: files[ 0 3 1 0 0 0 0 ]
+2025/06/05-19:41:44.663 29c76 Delete type=2 #345
+2025/06/05-19:41:44.663 29c76 Delete type=2 #346
+2025/06/05-19:41:44.663 29c76 Delete type=2 #348
+2025/06/05-19:41:44.663 29c76 Delete type=2 #350
+2025/06/05-19:41:44.664 29c76 Delete type=2 #352
+2025/06/05-19:41:44.664 29c76 Delete type=2 #354
+2025/06/05-20:02:14.727 29c77 Level-0 table #358: started
+2025/06/05-20:02:14.732 29c77 Level-0 table #358: 56950 bytes OK
+2025/06/05-20:02:14.737 29c77 Delete type=0 #353
