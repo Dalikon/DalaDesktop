@@ -33,7 +33,7 @@
 
     - name: Create the .config directory
       file:
-        src: "/home/{{ user }}/DalaDesktop/.config"
+        src: "/home/{{ user }}/DalaDesktop/configs"
         dest: "/home/{{ user }}/.config"
         state: link
 
