@@ -4,10 +4,25 @@
     dest: '/tmp/jakoolit-installer.sh'
     mode: '0755'
 
-- name: Run JaKooLits Fedora-Hyprland installer script
-  expect: 
-    command: 'bash /tmp/jakoolit-installer.sh'
-    interact: yes
+#- name: Run JaKooLits Fedora-Hyprland installer script
+#  expect: 
+#    command: 'bash /tmp/jakoolit-installer.sh'
+#    interact: yes
+
+- name: User needs to run the jakoolits installer
+  pause:
+    prompt: |
+      ======================================================================
+      MANUAL INTERACTION REQUIRED:
+      Please open a NEW TERMINAL (do NOT close this one!).
+      Navigate to: /home/{{ user }}/DalaDesktop/InstallRepos
+      Then run the JaKooLit installation script MANUALLY:
+      sh <(curl -L https://raw.githubusercontent.com/JaKooLit/Fedora-Hyprland/main/auto-install.sh)
+      
+      Follow all the prompts in the NEW TERMINAL to complete the installation.
+      Once the JaKooLit installer finishes,
+      RETURN TO THIS TERMINAL AND PRESS ENTER to continue the Ansible playbook.
+      ======================================================================
 
 - name: Install packages needed for this instalation to function outside JaKooLits script
   become: yes
