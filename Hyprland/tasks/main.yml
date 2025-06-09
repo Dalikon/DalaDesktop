@@ -24,8 +24,12 @@
       RETURN TO THIS TERMINAL AND PRESS ENTER to continue the Ansible playbook.
       ======================================================================
 
+- name: reset become
+  command: "true"
+  become: true
+
 - name: Install packages needed for this instalation to function outside JaKooLits script
-  become: yes
+  become: true
   dnf:
     name:
       - hyprpm
