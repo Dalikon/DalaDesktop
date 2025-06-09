@@ -5,9 +5,9 @@
     mode: '0755'
 
 - name: Run JaKooLits Fedora-Hyprland installer script
-  shell: '/tmp/jakoolit-installer.sh'
-  args:
-    executable: /bin/bash
+  expect: 
+    command: 'bash /tmp/jakoolit-installer.sh'
+    interact: yes
 
 - name: Install packages needed for this instalation to function outside JaKooLits script
   become: yes
