@@ -20,7 +20,17 @@
     #  file:
     #    path: "/home/{{ user }}/DalaDesktop/InstallRepos/xfce4-i3-workspaces-plugin"
     #    state: directory
+
+    - name: Backup original configs
+      copy:
+        src: "/home/{{ user }}/.config"
+        dest: "/home/{{ user }}/configs-orig-backup"
     
+    - name: Remove original directory
+      file:
+          path: "/home/{{ user }}/.config"
+          state: absent
+
     - name: Create the .config directory
       file:
         src: "/home/{{ user }}/DalaDesktop/.config"
@@ -44,10 +54,10 @@
         dest: "/home/{{ user }}/.dircolors"
         state: link
 
-    - name: create picture folder
-      file:
-        path: "/home/{{ user }}/Pictures/wallpapers"
-        state: directory
+    #- name: create picture folder
+    #  file:
+    #    path: "/home/{{ user }}/Pictures/wallpapers"
+    #    state: directory
 
     - name: copy backgrounds
       copy:

@@ -45,11 +45,6 @@
     dest: "/home/{{ user }}/DalaDesktop/configs-Dala-backup"
     recursive: yes
 
-- name: Backup original configs
-  copy:
-    src: "/home/{{ user }}/.config"
-    dest: "/home/{{ user }}/configs-orig-backup"
-
 - name: Symlink configs to ~/.config
   file:
     src: "/home/{{ user }}/DalaDesktop/configs"
