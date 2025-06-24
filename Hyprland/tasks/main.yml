@@ -51,7 +51,7 @@
       - re2-devel
       - mesa-libgbm-devel
       - libuuid-devel
-      #- hyprwayland-scanner
+      - hyprwayland-scanner-devel
       - xcb-util-wm-devel
       - xcb-util-errors-devel
       - tomlplusplus-devel
