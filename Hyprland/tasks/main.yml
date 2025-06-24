@@ -32,7 +32,6 @@
   become: true
   dnf:
     name:
-      - hyprpm
       - hyprsunset
       - cargo
       - cmake
@@ -57,6 +56,11 @@
       - xcb-util-errors-devel
       - tomlplusplus-devel
     state: present
+
+- name: Install hyprpm
+  become: true
+  dnf:
+    name: hyprpm
 
 - name: Backup Dala configs
   copy:
