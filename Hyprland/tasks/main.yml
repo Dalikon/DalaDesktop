@@ -57,10 +57,10 @@
       - tomlplusplus-devel
     state: present
 
-- name: Install hyprpm
-  become: true
-  dnf:
-    name: hyprpm
+#- name: Install hyprpm
+#  become: true
+#  dnf:
+#    name: hyprpm
 
 - name: Backup Dala configs
   copy:
