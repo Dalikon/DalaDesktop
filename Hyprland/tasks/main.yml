@@ -94,6 +94,8 @@
 
 - name: Build sunsetr
   command: cargo build --release
+  args:
+    chdir: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
 
 - name: Install sunsetr
   copy:
