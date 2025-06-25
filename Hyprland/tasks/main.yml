@@ -85,6 +85,7 @@
 - name: Create folder for sunset repository
   file:
     path: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    state: directory
 
 - name: Clone sunsetr repository
   git:
