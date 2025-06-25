@@ -73,14 +73,14 @@
     dest: "/home/{{ user }}/.config"
     state: link
 
-- name: Update hyprpm
-  command: hyprpm update
+#- name: Update hyprpm
+#  command: hyprpm update
 
-- name: Add hy3 plugin using hyprpm
-  command: hyprpm add https://github.com/outfoxxed/hy3
+#- name: Add hy3 plugin using hyprpm
+#  command: hyprpm add https://github.com/outfoxxed/hy3
 
-- name: Enable hy3 plugin
-  command: hyprpm enable hy3
+#- name: Enable hy3 plugin
+#  command: hyprpm enable hy3
 
 - name: Create folder for sunset repository
   file:
