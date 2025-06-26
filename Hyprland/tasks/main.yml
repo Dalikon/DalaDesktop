@@ -103,12 +103,35 @@
     src: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr/target/release/sunsetr"
     dest: "/usr/local/bin/"
 
-- name: Reaload systemd daemons
-  systemd:
-    daemon_reload: true
+#- name: Reaload systemd daemons
+#  systemd:
+#    daemons_reexec: true
+#    daemon_reload: true
 
-- name: Enable the monitor-watcher service
+#- name: Enable the monitor-watcher service
+#  systemd:
+#    name: monitor-watcher.service
+#    state: started
+#    enabled: true
+#    scope: user
+#  become_user: "{{ user }}"
+
+- name: Reload user-level systemd
+  become: false
+  shell: |
+    systemctl --user daemon-reexec
+    systemctl --user daemon-reload
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
+  become_user: "{{ user }}"
+
+- name: Enable and start user-level monitor-watcher service
+  become: false
   systemd:
     name: monitor-watcher.service
-    state: started
     enabled: true
+    state: started
+    scope: user
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
+  become_user: "{{ user }}"

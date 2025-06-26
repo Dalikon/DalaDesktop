@@ -63,6 +63,15 @@
       copy:
         src: "/home/{{ user }}/DalaDesktop/Backgrounds/"
         dest: "/home/{{ user }}/Pictures/wallpapers"
+    
+    - name: Get UID of target user
+      command: id -u {{ user }}
+      register: user_uid
+      changed_when: false
+
+    - name: Set UID fact
+      set_fact:
+        uid: "{{ user_uid.stdout }}"
 
   roles:
     - role: Hyprland
