@@ -1,13 +1,16 @@
 # ~/.config/systemd/user/monitor-watcher.service
 [Unit]
 Description=Hyprland monitor watcher
-After=hyprland-session.target
-PartOf=hyprland-session.target
-Requires=graphical-session.target
+#After=hyprland-session.target
+#PartOf=hyprland-session.target
 After=graphical-session.target
+PartOf=graphical-session.target
+#Requires=graphical-session.target
 
 [Service]
-ExecStart=%h/.config/hypr/UserScripts/detectMonitorChange2.sh
+Type=simple
+#ExecStart=%h/.config/hypr/UserScripts/detectMonitorChange2.sh
+ExecStart=/bin/bash -c 'sleep 3; exec %h/.config/hypr/UserScripts/detectMonitorChange2.sh'
 Restart=always
 RestartSec=3
 
