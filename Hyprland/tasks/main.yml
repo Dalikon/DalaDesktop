@@ -103,6 +103,12 @@
     src: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr/target/release/sunsetr"
     dest: "/usr/local/bin/"
 
+- name: Download rofi-power-menu script
+  get_url:
+    url: https://raw.githubusercontent.com/jluttine/rofi-power-menu/master/rofi-power-menu
+    dest: "{{ user }}/.local/bin/rofi-power-menu"
+    mode: '0755'
+
 #- name: Reaload systemd daemons
 #  systemd:
 #    daemons_reexec: true
