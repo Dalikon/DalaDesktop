@@ -37,6 +37,7 @@
       - cmake
       - meson
       - cpio
+      - socat
       - pkg-config
       - g++
       - gcc
@@ -104,9 +105,10 @@
     dest: "/usr/local/bin/"
 
 - name: Download rofi-power-menu script
+  become: true
   get_url:
     url: https://raw.githubusercontent.com/jluttine/rofi-power-menu/master/rofi-power-menu
-    dest: "{{ user }}/.local/bin/rofi-power-menu"
+    dest: "/usr/local/bin/rofi-power-menu"
     mode: '0755'
 
 #- name: Reaload systemd daemons
