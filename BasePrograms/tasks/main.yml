@@ -5,8 +5,8 @@
       - neovim
       - firefox
       - gimp
-        #- freecad
-      - balena
+      #- freecad
+      #- balena
       - obs-studio
       - cheese
       - prusa-slicer
