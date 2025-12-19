@@ -94,6 +94,7 @@ Plug 'michaeljsmith/vim-indent-object'
 " tools
 Plug 'simeji/winresizer'
 Plug 'ianva/vim-youdao-translater'
+Plug 'folke/which-key.nvim'
 
 " Plug 'mhinz/vim-startify'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
