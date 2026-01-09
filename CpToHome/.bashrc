@@ -25,6 +25,7 @@ if [ -d ~/.bashrc.d ]; then
 fi
 
 alias vim='nvim'
+alias nnvim='NVIM_APPNAME=nvim-dala nvim'
 
 #if [ "`id -u`" -eq 0 ]; then
 #    PS1="\[\033[m\]|\[\033[1;35m\]\t\[\033[m\]|\[\e[1;31m\]\u\[\e[1;36m\]\[\033[m\]@\[\e[1;36m\]\h\[\033[m\]:\[\e[0m\]\[\e[1;32m\][\w]> \[\e[0m\]"
@@ -63,34 +64,63 @@ BGWHITE='\[\e[1;37m\]'
 
 PROMPT_COMMAND=smile_prompt
 
+#function smile_prompt
+#{
+#if [ "$?" -eq "0" ]
+#then
+#smiley
+#SC="${GREEN}:)"
+#else
+#frowney
+#SC="${RED}:("
+#fi
+#if [ $UID -eq 0 ]
+#then
+#root user color
+#UC="${RED}"
+#else
+#normal user color
+#UC="${BWHITE}"
+#fi
+#hostname color
+#HC="${BGCYAN}"
+#regular color
+#RC="${BWHITE}"
+#default color
+#DF='\[\e[0m\]'
+#PS1="[${UC}\u${RC}@${HC}\h ${RC}\W${DF}] ${SC}${DF} "
+#}
+
 function smile_prompt
 {
-if [ "$?" -eq "0" ]
-then
-#smiley
-SC="${GREEN}:)"
-else
-#frowney
-SC="${RED}:("
-fi
-if [ $UID -eq 0 ]
-then
-#root user color
-UC="${RED}"
-else
-#normal user color
-UC="${BWHITE}"
-fi
-#hostname color
-HC="${BGCYAN}"
-#regular color
-RC="${BWHITE}"
-#default color
-DF='\[\e[0m\]'
-PS1="[${UC}\u${RC}@${HC}\h ${RC}\W${DF}] ${SC}${DF} "
+    if [ "$?" -eq "0" ]; then
+        SC="${GREEN}:)"
+    else
+        SC="${RED}:("
+    fi
+
+    if [ $UID -eq 0 ]; then
+        UC="${RED}"
+    else
+        UC="${BWHITE}"
+    fi
+
+    HC="${BGCYAN}"
+    RC="${BWHITE}"
+    DF='\[\e[0m\]'
+
+    # Add venv name if active
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        VENV_PROMPT="(`basename \"$VIRTUAL_ENV\"`)"
+    else
+        VENV_PROMPT=""
+    fi
+
+    PS1="${VENV_PROMPT}[${UC}\u${RC}@${HC}\h ${RC}\W${DF}] ${SC}${DF} "
 }
 
-eval "$(dircolors .dircolors)"
+
+eval "$(dircolors ~/.dircolors)"
 #export LS_COLORS=$(cat ~/DIR_COLORS)
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
