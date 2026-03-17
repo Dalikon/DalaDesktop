@@ -18,7 +18,7 @@ local function set_python_path(command)
 end
 
 ---@type vim.lsp.Config
-local M = {
+return {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
   root_markers = {
@@ -40,20 +40,20 @@ local M = {
     },
   },
   on_attach = function(client, bufnr)
-    -- Signature help keybinding in insert mode
-    --vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Help' })
-
-    -- Organize imports command
     vim.api.nvim_buf_create_user_command(bufnr, 'LspPyrightOrganizeImports', function()
       local params = {
         command = 'pyright.organizeimports',
         arguments = { vim.uri_from_bufnr(bufnr) },
       }
+
+      -- Using client.request() directly because "pyright.organizeimports" is private
+      -- (not advertised via capabilities), which client:exec_cmd() refuses to call.
+      -- https://github.com/neovim/neovim/blob/c333d64663d3b6e0dd9aa440e433d346af4a3d81/runtime/lua/vim/lsp/client.lua#L1024-L1030
       ---@diagnostic disable-next-line: param-type-mismatch
       client.request('workspace/executeCommand', params, nil, bufnr)
-    end, { desc = 'Organize Imports' })
-
-    -- Dynamic Python path command
+    end, {
+      desc = 'Organize Imports',
+    })
     vim.api.nvim_buf_create_user_command(bufnr, 'LspPyrightSetPythonPath', set_python_path, {
       desc = 'Reconfigure pyright with the provided python path',
       nargs = 1,
@@ -62,15 +62,5 @@ local M = {
   end,
 }
 
--- Add capabilities for completion & signature help
---local capabilities = vim.lsp.protocol.make_client_capabilities()
---local has_cmp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
---if has_cmp then
---  M.capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
---else
---  M.capabilities = capabilities
---end
-
-return M
 
 

@@ -35,3 +35,6 @@ opt.clipboard = "unnamedplus"
 opt.updatetime = 250
 opt.timeoutlen = 400
 
+-- Misc
+vim.opt.undofile = true
+vim.opt.shada = "'100,<50,s10,h"

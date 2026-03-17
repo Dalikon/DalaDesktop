@@ -91,6 +91,63 @@ return{
         },
       },
     },
-  }
+  },
 
+{
+  "rmagatti/auto-session",
+  config = function()
+    local nvim_tree_api = require("nvim-tree.api")
+
+    require("auto-session").setup({
+      enabled = true,
+      auto_restore_enabled = true,
+      auto_save_enabled = true,
+      pre_save_cmds = {
+        function()
+            -- Safely check if nvim-tree is loaded
+            if package.loaded["nvim-tree.api"] and nvim_tree_api.tree.is_visible() then
+                vim.g.nvim_tree_was_open = true
+            else
+                vim.g.nvim_tree_was_open = false
+            end
+        end
+      },
+      post_restore_cmds = {
+        function()
+            -- Only open tree if it was open before
+            if vim.g.nvim_tree_was_open and package.loaded["nvim-tree.api"] then
+                nvim_tree_api.tree.open()
+            end
+        end
+      },
+    })
+  end
+},
+
+  {
+    "akinsho/bufferline.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = true,
+  },
+
+  {
+  "ray-x/lsp_signature.nvim",
+  config = function()
+    require("lsp_signature").setup({
+      bind = true,                -- automatically attach to LSP
+      floating_window = true,     -- use a floating window
+      hint_enable = true,         -- show parameter hints
+      hint_prefix = " ",
+      fix_pos = true,             -- keep window fixed near cursor
+      padding = "",
+      transparency = 20,
+      toggle_key = "<M-x>",       -- optional key to toggle signature help
+      handler_opts = { border = "rounded" },
+        -- prevent empty signature notifications
+      always_trigger = false,          -- only trigger when signature info exists
+      extra_trigger_chars = { "(", "," },
+      toggle_key = nil,                -- no manual toggle
+    })
+  end
+  },
 }

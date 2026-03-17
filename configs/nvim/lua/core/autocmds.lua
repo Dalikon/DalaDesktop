@@ -22,12 +22,12 @@ autocmd("TextYankPost", {
 --  end
 --})
 
-autocmd("BufReadPost", {
-  callback = function(data)
-    local api = require("nvim-tree.api")
-    api.tree.open()
-  end,
-})
+--autocmd("BufReadPost", {
+--  callback = function(data)
+--    local api = require("nvim-tree.api")
+--    api.tree.open()
+--  end,
+--})
 
 --autocmd("CursorHold", {
 --  callback = function()

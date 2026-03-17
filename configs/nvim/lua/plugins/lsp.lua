@@ -5,6 +5,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
+      "ray-x/lsp_signature.nvim",
     },
     config = function()
        local lsps = {
@@ -14,17 +15,24 @@ return {
           --{ "cssls" },
           --{ "lua_ls" },
           --{ "hls" },
-          --{
-          --    "clangd",
-          --    {
-          --        init_options = {
-          --            -- im using this standard since i want the compiler to
-          --            -- know about true, false, etc - see
-         --             -- https://xnacly.me/posts/2025/clangd-lsp/
-         --             fallbackFlags = { '--std=c23' }
-         --         },
-         --     }
-         -- },
+          {
+              "clangd",
+              {
+                cmd = {
+                    "clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--completion-style=detailed",
+                    "--query-driver=/home/*/.platformio/packages/toolchain-*/bin/*",
+                  },
+                  init_options = {
+                        -- im using this standard since i want the compiler to
+                        -- know about true, false, etc - see
+                      -- https://xnacly.me/posts/2025/clangd-lsp/
+                      fallbackFlags = { '--std=c23' }
+                  },
+              }
+          },
          -- -- my custom sql language server
          -- {
          --     "sqleibniz",
