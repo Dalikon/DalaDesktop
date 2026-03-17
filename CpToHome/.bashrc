@@ -119,6 +119,7 @@ function smile_prompt
     PS1="${VENV_PROMPT}[${UC}\u${RC}@${HC}\h ${RC}\W${DF}] ${SC}${DF} "
 }
 
+export PLATFORMIO_PYTHON="/usr/bin/python3.13"
 
 eval "$(dircolors ~/.dircolors)"
 #export LS_COLORS=$(cat ~/DIR_COLORS)
@@ -127,3 +128,4 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$HOME/.local/bin
 unset rc
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
