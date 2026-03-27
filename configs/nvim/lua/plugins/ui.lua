@@ -1,17 +1,4 @@
 return {
-
-  -- -------------------------------------------------------
-  -- Colorscheme (LazyVim uses TokyoNight by default)
-  -- -------------------------------------------------------
-  {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme("tokyonight-night")
-    end,
-  },
-
   {
     "rebelot/kanagawa.nvim",
     lazy = false,
@@ -22,7 +9,7 @@ return {
 
        -- Save Onedark syntax highlights
        local function copy_highlight(group)
-         local g = vim.api.nvim_get_hl_by_name(group, true)
+         local g = vim.api.nvim_get_hl(0, { name = group })
          vim.api.nvim_set_hl(0, group, g)
        end
 
@@ -55,7 +42,6 @@ return {
     end,
   },
 
-
   {
     "olimorris/onedarkpro.nvim",
     lazy = false,
@@ -64,7 +50,6 @@ return {
       vim.cmd.colorscheme("onedark_vivid")
     end,
   },
-
 
   -- -------------------------------------------------------
   -- Statusline (clean & modern)

@@ -1,14 +1,13 @@
 return{
-
 {
   "nvim-tree/nvim-tree.lua",
-  requires = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "nvim-tree/nvim-web-devicons" },
   lazy = false,
   config = function()
     require("nvim-tree").setup({
       disable_netrw = true,
       hijack_netrw = true,
-      update_cwd = true,
+      sync_root_with_cwd = true,
       view = {
         width = 30,
         side = "right",

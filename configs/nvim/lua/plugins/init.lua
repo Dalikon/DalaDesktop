@@ -12,6 +12,7 @@ require("lazy").setup({
   require("plugins.git"),
   require("plugins.others"),
   require("plugins.nvim-tree"),
+  require("plugins.harpoon"),
 }, {
   ui = {
     border = "rounded",

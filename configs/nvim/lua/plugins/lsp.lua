@@ -42,7 +42,6 @@ return {
          --         root_markers = { "leibniz.lua" }
          --     }
          -- },
-         { "pyright" },
          { "marksman" }
       }
       
@@ -54,15 +53,6 @@ return {
           end
       end
     end
-  },
-
-  -- Optional: UI for diagnostics
-  {
-    "folke/trouble.nvim",
-    cmd = "TroubleToggle",
-    config = function()
-      require("trouble").setup({})
-    end,
   },
 }
 

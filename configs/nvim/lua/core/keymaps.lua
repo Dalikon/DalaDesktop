@@ -36,7 +36,6 @@ map("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true, de
 map("n", "<leader>f", ":NvimTreeFindFile<CR>", { noremap = true, silent = true, desc = "Focus file in explorer" })
 map("n", "<leader>t", "<C-w>p", { noremap = true, silent = true, desc = "Toggle focus" })
 
-
 -- Move between buffers
-map("n", "<S-l>", ":bnext<CR>")
-map("n", "<S-h>", ":bprev<CR>")
+map("n", "<S-l>", "<cmd>bnext<CR>")
+map("n", "<S-h>", "<cmd>bprev<CR>")

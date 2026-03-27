@@ -1,61 +1,43 @@
 /* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+// ### TOP Simple ## //
 
-// ### DEFAULT Laptop  - Top ### //
 {
 "include": [
   "$HOME/.config/waybar/Modules",
   "$HOME/.config/waybar/ModulesWorkspaces",
   "$HOME/.config/waybar/ModulesCustom",
-  "$HOME/.config/waybar/UserModules",
   "$HOME/.config/waybar/ModulesGroups",
+  "$HOME/.config/waybar/UserModules",
   ],
-"layer": "top",
+"layer": "top", 
+"position": "top", 
 //"mode": "dock",
 "output": "eDP-1",
 "exclusive": true,
 "passthrough": false,
-"position": "top",
-"spacing": 0,
-"fixed-center": true,
-"ipc": true,
-"margin-top": 3,
-"margin-left": 8,
-"margin-right": 8,
+"gtk-layer-shell": true,
+"margin-left": 6,
+"margin-right": 6,
+"margin-top": 2,
 
-"modules-left": [
-	//"custom/separator#blank",
-	"custom/cava_mviz",
-	//"custom/separator#blank",
-	"custom/playerctl",
-	//"custom/separator#blank_2",
-	"hyprland/window",
-	],
-
-"modules-center": [
-	"group/app_drawer",
-	//"custom/separator#blank",
-	"group/notify",
-	//"custom/separator#dot-line",
-	"hyprland/workspaces#rw",
-	"clock",
-	//"custom/separator#dot-line",
-	"custom/weather",
-	//"custom/separator#dot-line",
-	"idle_inhibitor",	
-	"custom/hint",	
-	],
-
-"modules-right": [
-	"tray",
-	"cpu",
-	"memory",
-	//"custom/separator#dot-line",
-	"group/laptop",
-	//"custom/separator#dot-line",
+"modules-left": [	
+	"idle_inhibitor", 
 	"group/mobo_drawer",
-	//"custom/separator#line",  
-	"group/audio",
-	//"custom/separator#dot-line", 
+	"hyprland/workspaces#numbers",
+	"tray"
+	//"mpris", 
+	],
+    
+"modules-center": [
+	"clock#2",
+	"group/notify",
+	],
+    
+"modules-right": [
+	"hyprland/window",  
+	"battery",
+ 	"group/audio", 
 	"group/status",
 	],
 }
+

@@ -56,15 +56,6 @@ autocmd("CursorHold", {
   end,
 })
 
-autocmd("CursorHoldI", {
-  callback = function()
-    if vim.bo.filetype == "markdown" then
-      return
-    end
-    vim.lsp.buf.signature_help()
-  end,
-})
-
 autocmd("FileType", {
   pattern = "yaml",
   callback = function()
@@ -72,3 +63,9 @@ autocmd("FileType", {
   end,
 })
 
+autocmd("VimLeavePre", {
+  group = augroup("AutoSession", { clear = true }),
+  callback = function()
+    require("auto-session").save_session()
+  end,
+})

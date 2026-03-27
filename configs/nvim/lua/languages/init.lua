@@ -1,23 +1,11 @@
 -- lua/languages/init.lua
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
-  callback = function()
-    require("languages.python")
-  end,
-})
+-- Register pyright config
+vim.lsp.config("pyright", require("languages.python"))
 
---vim.api.nvim_create_autocmd("FileType", {
---  pattern = "go",
---  callback = function()
---    require("languages.go")
---  end,
---})
+-- Register ts_ls config  
+vim.lsp.config("ts_ls", require("languages.js"))
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "javascript", "typescript" },
-  callback = function()
-    require("languages.js")
-  end,
-})
-
+-- Then enable them (or move these to plugins/lsp.lua alongside clangd)
+vim.lsp.enable("pyright")
+vim.lsp.enable("ts_ls")

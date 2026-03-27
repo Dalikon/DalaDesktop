@@ -1,9 +1,7 @@
 -- lua/languages/js.lua
-local lsp = _G.LSP_COMMON
-if not lsp then return end
-
-lsp.lspconfig.tsserver.setup({
-  on_attach = lsp.on_attach,
-  capabilities = lsp.capabilities,
-})
-
+---@type vim.lsp.Config
+return {
+  cmd = { "typescript-language-server", "--stdio" },
+  filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+  root_markers = { "package.json", "tsconfig.json", ".git" },
+}
