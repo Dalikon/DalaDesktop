@@ -5,6 +5,11 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+# Start tmux so continuum can restore all sessions and sessionizer works
+#if [ -z "$TMUX" ]; then
+#  exec tmux new-session -s main
+#fi
+
 # User specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
@@ -120,6 +125,9 @@ function smile_prompt
 }
 
 export PLATFORMIO_PYTHON="/usr/bin/python3.13"
+
+alias nvimv='NVIM_APPNAME=nvim-vanilla nvim'
+bind '"\C-f":"tmux-sessionizer\n"'
 
 eval "$(dircolors ~/.dircolors)"
 #export LS_COLORS=$(cat ~/DIR_COLORS)
