@@ -29,8 +29,10 @@ return {
                         -- im using this standard since i want the compiler to
                         -- know about true, false, etc - see
                       -- https://xnacly.me/posts/2025/clangd-lsp/
-                      fallbackFlags = { '--std=c23' }
+                      fallbackFlags = { '--std=c++17' }
                   },
+                  --root_dir = require('lspconfig.util').root_pattern('src', 'include', '.clangd')
+                  root_markers = { '.clangd', 'compile_commands.json', '.git' }  -- not root_dir
               }
           },
          -- -- my custom sql language server

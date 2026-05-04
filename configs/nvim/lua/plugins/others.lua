@@ -62,6 +62,16 @@ return{
   },
 
 {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+},
+
+{
   "rmagatti/auto-session",
   config = function()
     local nvim_tree_api = require("nvim-tree.api")
@@ -121,9 +131,32 @@ return{
       transparency = 20,
       handler_opts = { border = "rounded" },
       always_trigger = false,          -- only trigger when signature info exists
-      extra_trigger_chars = { "(", "," },
-      toggle_key = nil,                -- no manual toggle
+      --extra_trigger_chars = { "(", "," },
+      toggle_key = "<M-x>",                -- no manual toggle
     })
   end
   },
+
+  {
+  "stevearc/conform.nvim",
+  config = function()
+    require("conform").setup({
+      formatters = {
+        ["clang-format"] = {
+          prepend_args = { "--style={BasedOnStyle: LLVM, IndentWidth: 4}" },
+        },
+      },
+      formatters_by_ft = {
+        cpp = { "clang-format" },
+        c   = { "clang-format" },
+        python = { "black" },
+        lua = { "stylua" },
+      },
+    })
+  end,
+  keys = {
+    { "<leader>cf", function() require("conform").format() end, desc = "Format file" },
+  },
+  }
+
 }

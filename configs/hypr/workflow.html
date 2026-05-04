@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1e1e1f;
+    --bg2: #262628;
+    --bg3: #2e2e31;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e2e0d8;
+    --text2: #888680;
+    --text3: #555350;
+    --hypr: #7c6af7;
+    --hypr-bg: rgba(124,106,247,0.12);
+    --tmux: #2ec27e;
+    --tmux-bg: rgba(46,194,126,0.10);
+    --vim: #f5a623;
+    --vim-bg: rgba(245,166,35,0.10);
+    --shell: #60a5fa;
+    --shell-bg: rgba(96,165,250,0.10);
+    --accent: #7c6af7;
+  }
+
+  html { height: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .header-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .header-title strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .search-wrap {
+    flex: 1;
+    max-width: 380px;
+    position: relative;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    pointer-events: none;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 8px 12px 8px 34px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]::placeholder { color: var(--text3); }
+  input[type="text"]:focus { border-color: var(--accent); }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-hypr { background: var(--hypr); }
+  .dot-tmux { background: var(--tmux); }
+  .dot-vim  { background: var(--vim); }
+
+  main {
+    padding: 24px 32px 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+
+  .category {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .category.hidden { display: none; }
+
+  .cat-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .task:last-child { border-bottom: none; }
+  .task:hover { background: var(--bg3); }
+  .task.hidden { display: none; }
+
+  .layer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .l-hypr  { background: var(--hypr-bg);  color: var(--hypr); }
+  .l-tmux  { background: var(--tmux-bg);  color: var(--tmux); }
+  .l-vim   { background: var(--vim-bg);   color: var(--vim);  }
+  .l-shell { background: var(--shell-bg); color: var(--shell);}
+
+  .task-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .task-label {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .task-keys {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .task-note {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 3px;
+  }
+
+  kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 2px 7px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .sep {
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  .empty-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text3);
+    display: none;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .category { animation: fadeIn 0.2s ease both; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title"><strong>//</strong> workflow reference</div>
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="what do you want to do?" oninput="filter()" autofocus>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><span class="dot dot-hypr"></span>Hyprland</div>
+    <div class="legend-item"><span class="dot dot-tmux"></span>tmux</div>
+    <div class="legend-item"><span class="dot dot-vim"></span>Neovim</div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="category" data-cat="navigation">
+    <div class="cat-header">navigation</div>
+    <div class="task" data-tags="switch workspace desktop hyprland">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Switch workspace</div>
+        <div class="task-keys"><kbd>Super + 1-9</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="move window workspace hyprland">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Move window to workspace</div>
+        <div class="task-keys"><kbd>Super + Shift + 1-9</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="switch project session sessionizer tmux">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Open / switch project session</div>
+        <div class="task-keys"><kbd>Ctrl+f</kbd></div>
+        <div class="task-note">sessionizer — fuzzy pick from your projects available in terminal and tmux</div>
+      </div>
+    </div>
+    <div class="task" data-tags="switch tmux window tab">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Switch tmux window</div>
+        <div class="task-keys"><kbd>Ctrl + h/l</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="switch pane split tmux">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Switch pane</div>
+        <div class="task-keys"><kbd>Ctrl+b h/j/k/l</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="find open file telescope neovim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Find and open a file</div>
+        <div class="task-keys"><kbd>,ff</kbd></div>
+        <div class="task-note">Telescope fuzzy finder</div>
+      </div>
+    </div>
+    <div class="task" data-tags="jump harpoon marked file switch">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Jump to Harpoon marked file</div>
+        <div class="task-keys"><kbd>Alt+1</kbd><span class="sep">–</span><kbd>Alt+4</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="switch buffer open neovim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Cycle open buffers</div>
+        <div class="task-keys"><kbd>Shift+l</kbd><span class="sep">/</span><kbd>Shift+h</kbd><span class="sep">or</span><kbd>,fb</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="switch split window neovim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Switch Neovim split</div>
+        <div class="task-keys"><kbd>Ctrl+h/j/k/l</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category" data-cat="files">
+    <div class="cat-header">files</div>
+    <div class="task" data-tags="create new file neovim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Create a new file</div>
+        <div class="task-keys"><kbd>:e path/to/file.py</kbd></div>
+        <div class="task-note">file is created on first save</div>
+      </div>
+    </div>
+    <div class="task" data-tags="create new file same directory sibling">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">New file next to current file</div>
+        <div class="task-keys"><kbd>:e %:h/newfile.py</kbd></div>
+        <div class="task-note">%:h expands to current file's directory</div>
+      </div>
+    </div>
+    <div class="task" data-tags="harpoon mark add file">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Mark file with Harpoon</div>
+        <div class="task-keys"><kbd>,a</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="harpoon list view menu">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">View Harpoon list</div>
+        <div class="task-keys"><kbd>Ctrl+e</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="search grep text project find">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Search text across project</div>
+        <div class="task-keys"><kbd>,fg</kbd></div>
+        <div class="task-note">live grep via Telescope</div>
+      </div>
+    </div>
+    <div class="task" data-tags="file tree explorer toggle nvim-tree">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Toggle file tree</div>
+        <div class="task-keys"><kbd>,e</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="save write file">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Save file</div>
+        <div class="task-keys"><kbd>,w</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="quit close neovim all">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Quit Neovim (all buffers)</div>
+        <div class="task-keys"><kbd>:wqa</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category" data-cat="sessions">
+    <div class="cat-header">sessions &amp; persistence</div>
+    <div class="task" data-tags="restore tmux reboot resurrect continuum">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Restore tmux after reboot</div>
+        <div class="task-keys"><span class="task-note" style="margin:0">Automatic via tmux-continuum</span></div>
+        <div class="task-note">Manual: <kbd>Ctrl+b Ctrl+r</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="save tmux session manual resurrect">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Save tmux session manually</div>
+        <div class="task-keys"><kbd>Ctrl+b Ctrl+s</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="restore neovim buffers auto-session">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Restore Neovim session</div>
+        <div class="task-keys"><span class="task-note" style="margin:0">Automatic — open with <kbd>nvim</kbd> (no filename)</span></div>
+        <div class="task-note">auto-session restores buffers per directory</div>
+      </div>
+    </div>
+    <div class="task" data-tags="reload tmux config">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Reload tmux config</div>
+        <div class="task-keys"><kbd>Ctrl+b r</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category" data-cat="code">
+    <div class="cat-header">code &amp; LSP</div>
+    <div class="task" data-tags="autocomplete completion cmp">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Navigate completion menu</div>
+        <div class="task-keys"><kbd>Ctrl+n</kbd><span class="sep">/</span><kbd>Ctrl+p</kbd><span class="sep">confirm</span><kbd>Enter</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="diagnostics errors warnings trouble lsp">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Show all errors / warnings</div>
+        <div class="task-keys"><kbd>,xx</kbd></div>
+        <div class="task-note">Trouble panel — project-wide diagnostics</div>
+      </div>
+    </div>
+    <div class="task" data-tags="buffer diagnostics errors">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Show errors for current file only</div>
+        <div class="task-keys"><kbd>,xX</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="git status fugitive command">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Git commands</div>
+        <div class="task-keys"><kbd>:Git</kbd><span class="sep">or</span><kbd>:G</kbd></div>
+        <div class="task-note">vim-fugitive — full git inside Neovim</div>
+      </div>
+    </div>
+    <div class="task" data-tags="keymaps shortcuts which-key help">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">See available keymaps</div>
+        <div class="task-keys"><kbd>,?</kbd><span class="sep">or press</span><kbd>,</kbd><span class="sep">and wait</span></div>
+        <div class="task-note">which-key popup</div>
+      </div>
+    </div>
+    <div class="task" data-tags="clear search highlight nohlsearch">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Clear search highlight</div>
+        <div class="task-keys"><kbd>,h</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category" data-cat="tmux-misc">
+    <div class="cat-header">tmux — splits &amp; windows</div>
+    <div class="task" data-tags="new window tmux tab create">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">New window</div>
+        <div class="task-keys"><kbd>Ctrl+b c</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="split vertical pane tmux">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Split pane vertically</div>
+        <div class="task-keys"><kbd>Ctrl+b |</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="split horizontal pane tmux">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Split pane horizontally</div>
+        <div class="task-keys"><kbd>Ctrl+b -</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="scroll output history terminal tmux">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Scroll terminal output</div>
+        <div class="task-keys"><kbd>Ctrl+b [</kbd><span class="sep">then vim keys,</span><kbd>q</kbd><span class="sep">to exit</span></div>
+      </div>
+    </div>
+    <div class="task" data-tags="last previous window tmux">
+      <span class="layer l-tmux">tmux</span>
+      <div class="task-body">
+        <div class="task-label">Jump to last window</div>
+        <div class="task-keys"><kbd>Ctrl+b ^</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category" data-cat="plugins">
+    <div class="cat-header">plugins — installing &amp; managing</div>
+    <div class="task" data-tags="install add plugin lazy nvim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Install plugins</div>
+        <div class="task-keys"><kbd>:Lazy sync</kbd></div>
+        <div class="task-note">add spec to lua/plugins/ first, then sync</div>
+      </div>
+    </div>
+    <div class="task" data-tags="remove delete plugin lazy nvim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Remove a plugin</div>
+        <div class="task-keys"><kbd>:Lazy sync</kbd></div>
+        <div class="task-note">delete/comment the spec first, then sync</div>
+      </div>
+    </div>
+    <div class="task" data-tags="update plugins lazy nvim">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Update all plugins</div>
+        <div class="task-keys"><kbd>:Lazy update</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="health check plugin errors">
+      <span class="layer l-vim">Neovim</span>
+      <div class="task-body">
+        <div class="task-label">Check plugin health</div>
+        <div class="task-keys"><kbd>:checkhealth</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category" data-cat="Desktop">
+    <div class="cat-header">Hyprland Desktop</div>
+    <div class="task" data-tags="Hyprland Desktop Shortcuts">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Terminal (Kitty)</div>
+        <div class="task-keys"><kbd>SUPER+enter</kbd></div>
+        <div class="task-note">add spec to lua/plugins/ first, then sync</div>
+      </div>
+    </div>
+    <div class="task" data-tags="shortcuts list help Hyprland">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Shortcuts list</div>
+        <div class="task-keys"><kbd>SUPER+h</kbd></div>
+        <div class="task-note">list of shortcuts for Hyprland</div>
+      </div>
+    </div>
+    <div class="task" data-tags="browser brave">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch browser (Brave)</div>
+        <div class="task-keys"><kbd>SUPER+b</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+    <div class="task" data-tags="app launcher">
+      <span class="layer l-hypr">Hyprland</span>
+      <div class="task-body">
+        <div class="task-label">Launch app search window</div>
+        <div class="task-keys"><kbd>SUPER+d</kbd></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="empty-msg" id="empty-msg">no results — try different words</div>
+
+<script>
+function filter() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const tasks = document.querySelectorAll('.task');
+  const cats = document.querySelectorAll('.category');
+  let any = false;
+
+  tasks.forEach(t => {
+    const match = !q || t.textContent.toLowerCase().includes(q) || (t.dataset.tags||'').includes(q);
+    t.classList.toggle('hidden', !match);
+    if (match) any = true;
+  });
+
+  cats.forEach(c => {
+    const visible = [...c.querySelectorAll('.task')].some(t => !t.classList.contains('hidden'));
+    c.classList.toggle('hidden', !visible);
+  });
+
+  document.getElementById('empty-msg').style.display = any ? 'none' : 'block';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== document.getElementById('search')) {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+  if (e.key === 'Escape') {
+    document.getElementById('search').value = '';
+    filter();
+    document.getElementById('search').blur();
+  }
+});
+</script>
+</body>
+</html>
