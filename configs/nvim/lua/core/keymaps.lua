@@ -41,3 +41,16 @@ map("n", "<leader>t", "<C-w>p", { noremap = true, silent = true, desc = "Toggle 
 -- Move between buffers
 map("n", "<S-l>", "<cmd>bnext<CR>")
 map("n", "<S-h>", "<cmd>bprev<CR>")
+
+-- LSP keymaps (only active when LSP is attached)
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local buf = args.buf
+    map("n", "K",          vim.lsp.buf.hover,           { buffer = buf, desc = "Hover docs" })
+    map("n", "gd",         vim.lsp.buf.definition,      { buffer = buf, desc = "Go to definition" })
+    map("n", "gD",         vim.lsp.buf.declaration,     { buffer = buf, desc = "Go to declaration" })
+    map("n", "gr",         vim.lsp.buf.references,      { buffer = buf, desc = "References" })
+    map("n", "<leader>rn", vim.lsp.buf.rename,          { buffer = buf, desc = "Rename symbol" })
+    map("n", "<leader>ca", vim.lsp.buf.code_action,     { buffer = buf, desc = "Code action" })
+  end,
+})

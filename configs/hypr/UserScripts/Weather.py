@@ -33,9 +33,11 @@ def get_location():
 
 # Get latitude and longitude
 latitude, longitude = get_location()
+#location_id = "38cf052d0ed21a4b9da76e0ff200a8ac2ad5008b73f6cb9e6c3bb66b5e331e2f"
 
 # Open-Meteo API endpoint
 url = f"https://weather.com/en-PH/weather/today/l/{latitude},{longitude}"
+#url = f"https://weather.com/en-PH/weather/today/l/{location_id}"
 
 # manual location_id
 # NOTE: if you want to add manually, make sure you disable def get_location above
@@ -59,6 +61,8 @@ status = html_data("div[data-testid='wxPhrase']").text()
 status = f"{status[:16]}.." if len(status) > 17 else status
 
 # status code
+region = html_data("#regionHeader")
+print("DEBUG classes:", region.attr("class"), file=__import__('sys').stderr)
 status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
 
 # status icon
