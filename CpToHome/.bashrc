@@ -30,7 +30,6 @@ if [ -d ~/.bashrc.d ]; then
 fi
 
 alias vim='nvim'
-alias nnvim='NVIM_APPNAME=nvim-dala nvim'
 
 #if [ "`id -u`" -eq 0 ]; then
 #    PS1="\[\033[m\]|\[\033[1;35m\]\t\[\033[m\]|\[\e[1;31m\]\u\[\e[1;36m\]\[\033[m\]@\[\e[1;36m\]\h\[\033[m\]:\[\e[0m\]\[\e[1;32m\][\w]> \[\e[0m\]"
@@ -126,7 +125,6 @@ function smile_prompt
 
 export PLATFORMIO_PYTHON="/usr/bin/python3.13"
 
-alias nvimv='NVIM_APPNAME=nvim-vanilla nvim'
 bind '"\C-f":"tmux-sessionizer\n"'
 
 eval "$(dircolors ~/.dircolors)"
