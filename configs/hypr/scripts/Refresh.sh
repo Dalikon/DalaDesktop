@@ -27,12 +27,8 @@ done
 #killall -SIGUSR2 waybar
 systemctl --user stop waybar.service
 
-# quit ags & relaunch ags
-ags -q && ags &
-
 # some process to kill
-#for pid in $(pidof waybar rofi swaync ags swaybg); do
-for pid in $(pidof rofi swaync ags swaybg); do
+for pid in $(pidof rofi swaync swaybg); do
     kill -SIGUSR1 "$pid"
 done
 

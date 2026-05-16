@@ -4,7 +4,7 @@ CONFIGURE_DELAY=0.25
 TMP_FLAG="/tmp/hypr_monitor_event"
 MONITOR_DIR="$HOME/.config/hypr/Monitor_Profiles"
 CURRENT_CONF="$HOME/.config/hypr/monitors.conf"
-SCRIPTS_DIR="$HOME/.config/hypr/scripts"
+WALLPAPER="$HOME/Pictures/wallpapers/BKG2.jpg"
 
 configure_monitors() {
     sleep 1
@@ -31,25 +31,7 @@ configure_monitors() {
     systemctl --user restart waybar.service
     hyprctl reload
     sleep $CONFIGURE_DELAY
-
-    # Read current wallpaper from swww cache — never hardcode a path here,
-    # as that would reset the wallpaper and break the wallust theme on every monitor event
-    CACHE_DIR="$HOME/.cache/swww/"
-    CURRENT_WALLPAPER=""
-    for cache_file in "$CACHE_DIR"*; do
-        [ -f "$cache_file" ] || continue
-        wall=$(grep -v 'Lanczos3' "$cache_file" | head -n 1)
-        [ -f "$wall" ] && CURRENT_WALLPAPER="$wall" && break
-    done
-    [ -z "$CURRENT_WALLPAPER" ] && CURRENT_WALLPAPER="$HOME/Pictures/wallpapers/BKG2.jpg"
-
-    # Re-query monitors after reload so we target the active set
-    ACTIVE_MONITORS=$(echo "j/monitors" | socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket.sock" \
-        | jq -r '.[].name' | paste -sd, -)
-    swww img "$CURRENT_WALLPAPER" --outputs "$ACTIVE_MONITORS"
-
-    # Re-generate wallust colors so the theme stays consistent on all monitors
-    "$SCRIPTS_DIR/WallustSwww.sh" &
+    swww img "$WALLPAPER" --outputs "$(echo "$MONITORS_JSON" | jq -r '.[].name' | paste -sd, -)"
 }
 
 schedule_configuration() {
