@@ -1,15 +1,36 @@
 ---
-- name: Add rpm fusion free repo
-  command: dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-  become: yes
+- name: Enable RPM Fusion free repository
+  become: true
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
 
-- name: Add rpm fusion nonfree repo
-  command: dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-  become: yes
+- name: Enable RPM Fusion nonfree repository
+  become: true
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
 
-- name: install nvidia drivers
- dnf:
-   name:
-     - akmod-nvidia
-     - xorg-x11-drv-nvidia
+- name: Install Nvidia drivers
+  become: true
+  dnf:
+    name:
+      - akmod-nvidia
+      - xorg-x11-drv-nvidia
+    state: present
 
+- name: Install lock-on-suspend system service
+  become: true
+  copy:
+    src: "{{ repo_dir }}/lock-on-suspend.service"
+    dest: /etc/systemd/system/lock-on-suspend.service
+    mode: '0644'
+
+- name: Enable lock-on-suspend service
+  become: true
+  systemd:
+    name: lock-on-suspend.service
+    enabled: true
+    daemon_reload: true

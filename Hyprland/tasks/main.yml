@@ -1,46 +1,79 @@
-- name: Download JaKoolit's fedora hyprland installer
-  get_url:
-    url: 'https://raw.githubusercontent.com/JaKooLit/Fedora-Hyprland/main/auto-install.sh'
-    dest: '/tmp/jakoolit-installer.sh'
-    mode: '0755'
-
-#- name: Run JaKooLits Fedora-Hyprland installer script
-#  expect: 
-#    command: 'bash /tmp/jakoolit-installer.sh'
-#    interact: yes
-
-- name: User needs to run the jakoolits installer
-  pause:
-    prompt: |
-      ======================================================================
-      MANUAL INTERACTION REQUIRED:
-      Please open a NEW TERMINAL (do NOT close this one!).
-      Navigate to: /home/{{ user }}/DalaDesktop/InstallRepos
-      Then run the JaKooLit installation script MANUALLY:
-      sh <(curl -L https://raw.githubusercontent.com/JaKooLit/Fedora-Hyprland/main/auto-install.sh)
-      
-      Follow all the prompts in the NEW TERMINAL to complete the installation.
-      Once the JaKooLit installer finishes,
-      RETURN TO THIS TERMINAL AND PRESS ENTER to continue the Ansible playbook.
-      ======================================================================
-
-- name: reset become
-  command: "true"
+---
+# Enable RPM Fusion free — required for ffmpeg and other multimedia codecs
+- name: Enable RPM Fusion free repository
   become: true
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
 
-- name: Install packages needed for this instalation to function outside JaKooLits script
+- name: Install Hyprland stack and supporting packages
   become: true
   dnf:
     name:
-      - hyprsunset
+      # Hyprland core (hyprpm is bundled with hyprland package)
+      - hyprland
+      - hyprlock
+      - hypridle
+      # Wallpaper daemon and color theming
+      - swww
+      - wallust
+      # Status bar
+      - waybar
+      # Notifications
+      - SwayNotificationCenter
+      # App launcher
+      - rofi
+      # Terminal
+      - kitty
+      # File manager
+      - Thunar
+      - thunar-volman
+      - thunar-archive-plugin
+      - file-roller
+      # Bluetooth
+      - blueman
+      # Network tray
+      - network-manager-applet
+      # XDG portals (screen sharing, file picker)
+      - xdg-desktop-portal-hyprland
+      - xdg-desktop-portal-gtk
+      # Clipboard
+      - wl-clipboard
+      - cliphist
+      # Polkit auth agent
+      - lxqt-policykit
+      # Scripting utilities used by hyprland scripts
+      - socat
+      - jq
+      - bc
+      - curl
+      - wget
+      # Screenshots
+      - grim
+      - slurp
+      - swappy
+      # Wallpaper effects (ImageMagick) and video wallpapers (ffmpeg, mpv)
+      - ImageMagick
+      - ffmpeg
+      - mpv
+      # Monitor layout GUI
+      - nwg-displays
+      - nwg-look
+      # Media / audio controls
+      - playerctl
+      - brightnessctl
+      - pamixer
+      # Logitech peripheral manager
+      - solaar
+      # Build toolchain — cargo for sunsetr, rest needed by hyprpm to compile plugins (e.g. hy3)
       - cargo
       - cmake
       - meson
       - cpio
-      - socat
       - pkg-config
-      - g++
       - gcc
+      - gcc-c++
       - aquamarine-devel
       - hyprlang-devel
       - hyprcursor-devel
@@ -58,82 +91,49 @@
       - tomlplusplus-devel
     state: present
 
-#- name: Install hyprpm
-#  become: true
-#  dnf:
-#    name: hyprpm
-
-- name: Backup Dala configs
-  copy:
-    src: "/home/{{ user }}/DalaDesktop/configs"
-    dest: "/home/{{ user }}/DalaDesktop/configs-Dala-backup"
-
-- name: Symlink configs to ~/.config
+# Build and install sunsetr (night-time colour temperature, not in Fedora repos)
+- name: Create directory for sunsetr source
   file:
-    src: "/home/{{ user }}/DalaDesktop/configs"
-    dest: "/home/{{ user }}/.config"
-    state: link
-
-#- name: Update hyprpm
-#  command: hyprpm update
-
-#- name: Add hy3 plugin using hyprpm
-#  command: hyprpm add https://github.com/outfoxxed/hy3
-
-#- name: Enable hy3 plugin
-#  command: hyprpm enable hy3
-
-- name: Create folder for sunset repository
-  file:
-    path: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    path: "{{ repo_dir }}/InstallRepos/sunsetr"
     state: directory
 
 - name: Clone sunsetr repository
   git:
     repo: https://github.com/psi4j/sunsetr.git
-    dest: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    dest: "{{ repo_dir }}/InstallRepos/sunsetr"
+    update: yes
 
 - name: Build sunsetr
   command: cargo build --release
   args:
-    chdir: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    chdir: "{{ repo_dir }}/InstallRepos/sunsetr"
+    creates: "{{ repo_dir }}/InstallRepos/sunsetr/target/release/sunsetr"
+  become: false
 
-- name: Install sunsetr
+- name: Install sunsetr to /usr/local/bin
   become: true
   copy:
-    src: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr/target/release/sunsetr"
-    dest: "/usr/local/bin/"
+    src: "{{ repo_dir }}/InstallRepos/sunsetr/target/release/sunsetr"
+    dest: /usr/local/bin/sunsetr
+    mode: '0755'
+    remote_src: true
 
-- name: Download rofi-power-menu script
+# rofi-power-menu is a shell script, not packaged
+- name: Download rofi-power-menu
   become: true
   get_url:
     url: https://raw.githubusercontent.com/jluttine/rofi-power-menu/master/rofi-power-menu
-    dest: "/usr/local/bin/rofi-power-menu"
+    dest: /usr/local/bin/rofi-power-menu
     mode: '0755'
 
-#- name: Reaload systemd daemons
-#  systemd:
-#    daemons_reexec: true
-#    daemon_reload: true
-
-#- name: Enable the monitor-watcher service
-#  systemd:
-#    name: monitor-watcher.service
-#    state: started
-#    enabled: true
-#    scope: user
-#  become_user: "{{ user }}"
-
-- name: Reload user-level systemd
+# Systemd user services — service files are already in place via the ~/.config symlink
+- name: Reload user-level systemd daemon
   become: false
-  shell: |
-    systemctl --user daemon-reexec
-    systemctl --user daemon-reload
+  shell: systemctl --user daemon-reload
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
-  become_user: "{{ user }}"
 
-- name: Enable and start user-level monitor-watcher service
+- name: Enable and start monitor-watcher service
   become: false
   systemd:
     name: monitor-watcher.service
@@ -142,4 +142,18 @@
     scope: user
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
-  become_user: "{{ user }}"
+
+- name: Enable and start waybar service
+  become: false
+  systemd:
+    name: waybar.service
+    enabled: true
+    state: started
+    scope: user
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
+
+# NOTE: hy3 (i3-like tiling plugin) must be installed manually after first login:
+#   hyprpm add https://github.com/outfoxxed/hy3
+#   hyprpm enable hy3
+# hyprpm requires a running Hyprland session, so it cannot run from this playbook.
