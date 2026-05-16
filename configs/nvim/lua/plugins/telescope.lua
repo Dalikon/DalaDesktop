@@ -10,7 +10,6 @@ return {
       { "<leader>fh", "<cmd>Telescope help_tags<CR>",  desc = "Help tags" },
     },
     config = function()
-      local actions = require("telescope.actions")
       require("telescope").setup({
         defaults = {
           file_ignore_patterns = { "node_modules", ".git/" },

@@ -23,18 +23,15 @@ return {
                   "--background-index",
                   "--clang-tidy",
                   "--completion-style=detailed",
-                  "--compile-commands-dir=.pio/build/esp32dev",
-                  --"--query-driver=/home/*/.platformio/packages/toolchain-*/bin/*",
-                  "--query-driver=/home/dala/.platformio/packages/toolchain-xtensa-esp-elf/bin/xtensa-esp32-elf-g++",
+                  -- For PlatformIO/ESP32 projects, add a .clangd file at project root:
+                  --   CompileFlags:
+                  --     CompilationDatabase: .pio/build/esp32dev
+                  "--query-driver=/home/*/.platformio/packages/toolchain-*/bin/*",
                 },
                   init_options = {
-                        -- im using this standard since i want the compiler to
-                        -- know about true, false, etc - see
-                      -- https://xnacly.me/posts/2025/clangd-lsp/
                       fallbackFlags = { '--std=c++17' }
                   },
-                  --root_dir = require('lspconfig.util').root_pattern('src', 'include', '.clangd')
-                  root_markers = { '.clangd', 'compile_commands.json', '.git' }  -- not root_dir
+                  root_markers = { '.clangd', 'compile_commands.json', '.git' }
               }
           },
          -- -- my custom sql language server
@@ -48,13 +45,13 @@ return {
          -- },
          { "marksman" }
       }
-      
+
       for _, lsp in pairs(lsps) do
           local name, config = lsp[1], lsp[2]
-          vim.lsp.enable(name)
           if config then
               vim.lsp.config(name, config)
           end
+          vim.lsp.enable(name)
       end
     end
   },
