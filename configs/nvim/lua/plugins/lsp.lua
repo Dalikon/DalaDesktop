@@ -19,12 +19,14 @@ return {
               "clangd",
               {
                 cmd = {
-                    "clangd",
-                    "--background-index",
-                    "--clang-tidy",
-                    "--completion-style=detailed",
-                    "--query-driver=/home/*/.platformio/packages/toolchain-*/bin/*",
-                  },
+                  "clangd",
+                  "--background-index",
+                  "--clang-tidy",
+                  "--completion-style=detailed",
+                  "--compile-commands-dir=.pio/build/esp32dev",
+                  --"--query-driver=/home/*/.platformio/packages/toolchain-*/bin/*",
+                  "--query-driver=/home/dala/.platformio/packages/toolchain-xtensa-esp-elf/bin/xtensa-esp32-elf-g++",
+                },
                   init_options = {
                         -- im using this standard since i want the compiler to
                         -- know about true, false, etc - see
