@@ -32,16 +32,11 @@ configure_monitors() {
     hyprctl reload
     sleep $CONFIGURE_DELAY
 
-    # Read current wallpaper from swww cache — never hardcode a path here,
+    # Read current wallpaper via swww query — never hardcode a path here,
     # as that would reset the wallpaper and break the wallust theme on every monitor event
-    CACHE_DIR="$HOME/.cache/swww/"
-    CURRENT_WALLPAPER=""
-    for cache_file in "$CACHE_DIR"*; do
-        [ -f "$cache_file" ] || continue
-        wall=$(grep -v 'Lanczos3' "$cache_file" | head -n 1)
-        [ -f "$wall" ] && CURRENT_WALLPAPER="$wall" && break
-    done
-    [ -z "$CURRENT_WALLPAPER" ] && CURRENT_WALLPAPER="$HOME/Pictures/wallpapers/BKG2.jpg"
+    # swww 0.9+ uses a binary cache file; grep is broken — use swww query instead
+    CURRENT_WALLPAPER=$(swww query | grep 'currently displaying: image:' | head -n 1 | sed 's/.*currently displaying: image: //')
+    { [ -z "$CURRENT_WALLPAPER" ] || [ ! -f "$CURRENT_WALLPAPER" ]; } && CURRENT_WALLPAPER="$HOME/Pictures/wallpapers/BKG2.jpg"
 
     # Re-query monitors after reload so we target the active set
     ACTIVE_MONITORS=$(echo "j/monitors" | socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket.sock" \
