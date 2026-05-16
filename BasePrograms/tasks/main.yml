@@ -10,6 +10,8 @@
       - python3
       - python3-pip
       - golang
+      - nodejs
+      - npm
       # Browsers (brave installed separately via BraveBrowser role)
       - firefox
       # Productivity / creativity
@@ -22,6 +24,58 @@
       - gthumb
       - gnome-calculator
       - virt-manager
+    state: present
+
+# LSP servers for Neovim
+- name: Install typescript-language-server and pyright via npm
+  become: true
+  npm:
+    name: "{{ item }}"
+    global: true
+    state: present
+  loop:
+    - typescript-language-server
+    - typescript
+    - pyright
+
+# lua-language-server — not in Fedora repos, install from GitHub release
+- name: Get latest lua-language-server release URL
+  uri:
+    url: https://api.github.com/repos/LuaLS/lua-language-server/releases/latest
+    return_content: true
+  register: luals_release
+
+- name: Set lua-language-server download URL
+  set_fact:
+    luals_url: "{{ luals_release.json.assets | selectattr('name', 'match', '.*linux-x64\\.tar\\.gz') | map(attribute='browser_download_url') | first }}"
+
+- name: Create lua-language-server install directory
+  file:
+    path: "/home/{{ user }}/.local/share/lua-language-server"
+    state: directory
+
+- name: Download and extract lua-language-server
+  unarchive:
+    src: "{{ luals_url }}"
+    dest: "/home/{{ user }}/.local/share/lua-language-server"
+    remote_src: true
+    creates: "/home/{{ user }}/.local/share/lua-language-server/bin/lua-language-server"
+
+- name: Install lua-language-server wrapper script
+  copy:
+    dest: "/home/{{ user }}/.local/bin/lua-language-server"
+    content: |
+      #!/bin/bash
+      exec "$HOME/.local/share/lua-language-server/bin/lua-language-server" "$@"
+    mode: '0755'
+
+# Python formatters/tools used by conform.nvim
+- name: Install Python dev tools
+  become: false
+  pip:
+    name:
+      - black
+    extra_args: --user
     state: present
 
 - name: Add Flathub repository

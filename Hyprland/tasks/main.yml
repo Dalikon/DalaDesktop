@@ -26,6 +26,7 @@
       - rofi
       # Terminal
       - kitty
+      - fzf
       # File manager
       - Thunar
       - thunar-volman
