@@ -78,6 +78,43 @@
     extra_args: --user
     state: present
 
+# marksman (Markdown LSP) — not in Fedora repos
+- name: Get latest marksman release URL
+  uri:
+    url: https://api.github.com/repos/artempyanykh/marksman/releases/latest
+    return_content: true
+  register: marksman_release
+
+- name: Set marksman download URL
+  set_fact:
+    marksman_url: "{{ marksman_release.json.assets | selectattr('name', 'equalto', 'marksman-linux-x64') | map(attribute='browser_download_url') | first }}"
+
+- name: Download marksman
+  get_url:
+    url: "{{ marksman_url }}"
+    dest: "/home/{{ user }}/.local/bin/marksman"
+    mode: '0755'
+
+# stylua (Lua formatter) — used by conform.nvim, not in Fedora repos
+- name: Install stylua via cargo
+  become: false
+  command: cargo install stylua
+  args:
+    creates: "/home/{{ user }}/.cargo/bin/stylua"
+
+- name: Symlink stylua to ~/.local/bin
+  file:
+    src: "/home/{{ user }}/.cargo/bin/stylua"
+    dest: "/home/{{ user }}/.local/bin/stylua"
+    state: link
+
+# TPM — tmux plugin manager (required for tmux-resurrect and tmux-continuum)
+- name: Clone TPM
+  git:
+    repo: https://github.com/tmux-plugins/tpm.git
+    dest: "/home/{{ user }}/.tmux/plugins/tpm"
+    update: yes
+
 - name: Add Flathub repository
   become: true
   command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -87,3 +124,6 @@
 # lazy.nvim (plugin manager) bootstraps itself automatically on the first
 # `nvim` run — no manual install step needed since the config is already
 # linked from DalaDesktop/configs/nvim/
+
+# NOTE: After first nvim run, tmux plugins must be installed manually:
+#   tmux then prefix + I (Ctrl-b I) to install plugins via TPM

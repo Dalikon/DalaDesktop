@@ -1,22 +1,31 @@
 return{
   {
     "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup({})
-    end,
     event = "VeryLazy",
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    },
+    config = function()
+      local wk = require("which-key")
+      wk.setup({})
+      wk.add({
+        -- Leader groups
+        { "<leader>f",  group = "find" },
+        { "<leader>h",  group = "hunks" },
+        { "<leader>x",  group = "diagnostics" },
+        { "<leader>c",  group = "code" },
+        { "<leader>t",  group = "tabs" },
+        { "<leader>e",  group = "explorer" },
+        { "<leader>a",  group = "harpoon" },
+        { "<leader>r",  group = "rename" },
+        -- Navigation prefixes
+        { "g",  group = "goto" },
+        { "]",  group = "next" },
+        { "[",  group = "prev" },
+      })
+    end,
     keys = {
       {
         "<leader>?",
-        function()
-          require("which-key").show({ global = false })
-        end,
-        desc = "Buffer Local Keymaps (which-key)",
+        function() require("which-key").show({ global = false }) end,
+        desc = "Buffer local keymaps",
       },
     },
   },

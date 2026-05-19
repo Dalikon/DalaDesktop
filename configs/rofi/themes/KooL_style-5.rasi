@@ -201,10 +201,16 @@ element normal.active {
     text-color:                 inherit;
 }
 
-element-text selected,
+element-text selected {
+    background-color:           @active;
+    text-color:                 inherit;
+}
+
 element selected.normal {
     background-color:           @active;
     text-color:                 inherit;
+    border:                     2px;
+    border-color:               #00FFFF;
 }
 
 element selected.urgent {

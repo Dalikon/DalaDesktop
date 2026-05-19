@@ -9,8 +9,8 @@ local opts = { noremap = true, silent = true }
 map("n", "<leader>w", "<cmd>w<CR>", opts)
 map("n", "<leader>q", "<cmd>q<CR>", opts)
 
--- Clear search highlight
-map("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
+-- Clear search highlight — <leader>n so <leader>h is free for git hunks
+map("n", "<leader>n", "<cmd>nohlsearch<CR>", { desc = "Clear highlight" })
 
 -- Window navigation
 map("n", "<C-h>", "<C-w>h", opts)
@@ -30,19 +30,15 @@ map("n", "Q", "<nop>", opts)
 -- Manual diagnostic float (also opens automatically on CursorHold)
 map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Diagnostic float" })
 
--- Toggle file explorer
-map("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle file explorer" })
+-- Explorer (<leader>e group)
+map("n", "<leader>e",  ":NvimTreeToggle<CR>",   { noremap = true, silent = true, desc = "Toggle explorer" })
+map("n", "<leader>ef", ":NvimTreeFindFile<CR>",  { noremap = true, silent = true, desc = "Find file in explorer" })
 
--- Focus on file explorer
-map("n", "<leader>f", ":NvimTreeFindFile<CR>", { noremap = true, silent = true, desc = "Focus file in explorer" })
-map("n", "<leader>t", "<C-w>p", { noremap = true, silent = true, desc = "Toggle focus" })
-
--- Move between tab pages
--- <Tab>/<S-Tab> are distinct from <C-i>/<C-o> when extkeys is enabled (kitty + tmux extkeys)
-map("n", "<Tab>",   "<cmd>tabnext<CR>",  { desc = "Next tab" })
-map("n", "<S-Tab>", "<cmd>tabprev<CR>",  { desc = "Prev tab" })
-map("n", "<leader>tn", "<cmd>tabnew<CR>",   { desc = "New tab" })
-map("n", "<leader>tc", "<cmd>tabclose<CR>", { desc = "Close tab" })
+-- Tab pages (<leader>t group)
+map("n", "<Tab>",       "<cmd>tabnext<CR>",   { desc = "Next tab" })
+map("n", "<S-Tab>",     "<cmd>tabprev<CR>",   { desc = "Prev tab" })
+map("n", "<leader>tn",  "<cmd>tabnew<CR>",    { desc = "New tab" })
+map("n", "<leader>tc",  "<cmd>tabclose<CR>",  { desc = "Close tab" })
 
 -- LSP keymaps (only active when LSP is attached)
 vim.api.nvim_create_autocmd("LspAttach", {

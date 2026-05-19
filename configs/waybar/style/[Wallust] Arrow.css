@@ -1,0 +1,166 @@
+/* ----------- 💫 https://github.com/JaKooLit 💫 -------- */
+/* [Wallust] Arrow - Arrow style with wallust dynamic colors */
+
+@import '../../.config/waybar/wallust/colors-waybar.css';
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-weight: bold;
+    min-height: 0;
+    font-size: 97%;
+    font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    text-shadow: none;
+    icon-shadow: none;
+}
+
+#waybar {
+    background: @color0;
+    color: @foreground;
+}
+
+#backlight,
+#backlight-slider,
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#memory,
+#mode,
+#mpris,
+#network,
+#power-profiles-daemon,
+#pulseaudio,
+#pulseaudio-slider,
+#taskbar,
+#temperature,
+#tray,
+#window,
+#wireplumber,
+#workspaces,
+#custom-backlight,
+#custom-browser,
+#custom-cava_mviz,
+#custom-cycle_wall,
+#custom-dot_update,
+#custom-file_manager,
+#custom-keybinds,
+#custom-keyboard,
+#custom-light_dark,
+#custom-lock,
+#custom-hint,
+#custom-hypridle,
+#custom-menu,
+#custom-playerctl,
+#custom-power_vertical,
+#custom-power,
+#custom-quit,
+#custom-reboot,
+#custom-settings,
+#custom-spotify,
+#custom-swaync,
+#custom-tty,
+#custom-updater,
+#custom-weather,
+#custom-weather.clearNight,
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight,
+#custom-weather.default,
+#custom-weather.rainyDay,
+#custom-weather.rainyNight,
+#custom-weather.severe,
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight,
+#custom-weather.sunnyDay {
+    padding-left: 8pt;
+    padding-right: 8pt;
+}
+
+/* Critical animations */
+#mode,
+#memory.critical,
+#cpu.critical,
+#temperature.critical,
+#battery.critical.discharging {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-name: blink-critical;
+    animation-duration: 1s;
+}
+
+@keyframes blink-critical {
+    to { background-color: @color9; }
+}
+
+/* Warnings */
+#network.disconnected,
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#battery.warning.discharging {
+    color: @color11;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding-left: 2pt;
+    padding-right: 2pt;
+    color: @foreground;
+    background: @color8;
+}
+
+#workspaces button.visible {
+    color: @foreground;
+    background: @color3;
+}
+
+#workspaces button.focused {
+    color: @color0;
+    background: @color12;
+}
+
+#workspaces button.urgent {
+    color: @color0;
+    background: @color11;
+}
+
+#workspaces button:hover {
+    background: @color0;
+    color: @foreground;
+}
+
+#window {
+    margin-right: 35pt;
+    margin-left: 35pt;
+}
+
+/* Module backgrounds - each module gets a distinct wallust color */
+#clock       { background: @foreground; color: @color0;    }
+#tray        { background: @color0;                        }
+#language    { background: @color1;     color: @color0;    }
+#battery     { background: @color6;     color: @foreground; }
+#temperature { background: @color3;     color: @color0;    }
+#cpu         { background: @color2;     color: @foreground; }
+#memory      { background: @color14;    color: @color0;    }
+#network     { background: @color4;     color: @foreground; }
+#pulseaudio  { background: @color5;     color: @color0;    }
+
+/* Arrow separators - color cascades between adjacent module backgrounds */
+#custom-arrow1  { color: @foreground; background: @color0;       }  /* clock → tray */
+#custom-arrow2  { color: @color0;     background: @color1;       }  /* tray → language */
+#custom-arrow3  { color: @color1;     background: @color6;       }  /* language → battery */
+#custom-arrow4  { color: @color6;     background: @color3;       }  /* battery → temp */
+#custom-arrow5  { color: @color3;     background: @color2;       }  /* temp → cpu */
+#custom-arrow6  { color: @color2;     background: @color14;      }  /* cpu → memory */
+#custom-arrow7  { color: @color14;    background: @color4;       }  /* memory → network */
+#custom-arrow8  { color: @color4;     background: @color5;       }  /* network → sound */
+#custom-arrow9  { color: @color5;     background: transparent;   }  /* sound → edge */
+#custom-arrow10 { color: @color8;     background: transparent;   }  /* workspaces → edge */
