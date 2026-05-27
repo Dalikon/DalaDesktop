@@ -167,12 +167,6 @@
       - nwg-look
     state: present
 
-- name: Remove ffmpeg-free (conflicts with RPM Fusion ffmpeg)
-  become: true
-  dnf:
-    name: ffmpeg-free
-    state: absent
-
 - name: Install media packages
   become: true
   dnf:
@@ -180,6 +174,7 @@
       - ffmpeg
       - mpv
     state: present
+    allowerasing: true
 
 - name: Install scripting and utility packages
   become: true
