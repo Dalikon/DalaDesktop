@@ -32,6 +32,7 @@
         src: "{{ repo_dir }}/configs"
         dest: "/home/{{ user }}/.config"
         state: link
+        force: yes
 
     - name: Symlink ~/.bashrc
       file:
@@ -45,18 +46,21 @@
         src: "{{ repo_dir }}/CpToHome/.dircolors"
         dest: "/home/{{ user }}/.dircolors"
         state: link
+        force: yes
 
     - name: Symlink ~/.bash_profile
       file:
         src: "{{ repo_dir }}/CpToHome/.bash_profile"
         dest: "/home/{{ user }}/.bash_profile"
         state: link
+        force: yes
 
     - name: Symlink ~/.gitconfig
       file:
         src: "{{ repo_dir }}/CpToHome/.gitconfig"
         dest: "/home/{{ user }}/.gitconfig"
         state: link
+        force: yes
 
     - name: Ensure ~/.local/bin directory exists
       file:
@@ -68,6 +72,7 @@
         src: "{{ repo_dir }}/CpToHome/.local/bin/tmux-cht.sh"
         dest: "/home/{{ user }}/.local/bin/tmux-cht.sh"
         state: link
+        force: yes
 
     - name: Ensure ~/.ssh directory exists with correct permissions
       file:
@@ -80,6 +85,7 @@
         src: "{{ repo_dir }}/CpToHome/.ssh/config"
         dest: "/home/{{ user }}/.ssh/config"
         state: link
+        force: yes
 
     - name: Ensure wallpapers directory exists
       file:
