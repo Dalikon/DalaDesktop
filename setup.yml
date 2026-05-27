@@ -4,6 +4,14 @@
     user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
     repo_dir: "/home/{{ user }}/DalaDesktop"
 
+    # ── Optional roles ─────────────────────────────────────────────────────
+    # Set false on machines where you want to keep an existing login manager
+    # (e.g. GNOME on a work laptop)
+    install_sddm: true
+
+    # Set true on machines with an NVIDIA GPU
+    install_nvidia: false
+
   pre_tasks:
     - name: Create InstallRepos directory
       file:
@@ -95,7 +103,10 @@
   roles:
     - role: Hyprland
     - role: BasePrograms
+    - role: Fonts
     - role: BraveBrowser
     - role: InstallObsidian
-    # Uncomment to install Nvidia drivers (requires RPM Fusion nonfree):
-    # - role: NvidiaDriversFedora
+    - role: SDDM
+      when: install_sddm
+    - role: NvidiaDriversFedora
+      when: install_nvidia

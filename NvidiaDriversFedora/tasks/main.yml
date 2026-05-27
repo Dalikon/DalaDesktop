@@ -1,25 +1,35 @@
 ---
-- name: Enable RPM Fusion free repository
-  become: true
-  dnf:
-    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-    state: present
-    disable_gpg_check: true
-
-- name: Enable RPM Fusion nonfree repository
-  become: true
-  dnf:
-    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-    state: present
-    disable_gpg_check: true
-
-- name: Install Nvidia drivers
+# RPM Fusion nonfree is required — already enabled by Hyprland role
+- name: Install NVIDIA drivers and CUDA support
   become: true
   dnf:
     name:
       - akmod-nvidia
       - xorg-x11-drv-nvidia
+      - xorg-x11-drv-nvidia-cuda
+      - libva
+      - libva-nvidia-driver
     state: present
+
+# ── GRUB kernel parameters ────────────────────────────────────────────────────
+- name: Check if NVIDIA GRUB options already present
+  command: grep -q "nvidia-drm.modeset=1" /etc/default/grub
+  register: grub_nvidia_check
+  failed_when: false
+  changed_when: false
+
+- name: Add NVIDIA kernel parameters to GRUB_CMDLINE_LINUX
+  become: true
+  replace:
+    path: /etc/default/grub
+    regexp: '(GRUB_CMDLINE_LINUX="[^"]*)"'
+    replace: '\1 rd.driver.blacklist=nouveau modprobe.blacklist=nouveau nvidia-drm.modeset=1 nvidia_drm.fbdev=1"'
+  when: grub_nvidia_check.rc != 0
+
+- name: Rebuild GRUB configuration
+  become: true
+  command: grub2-mkconfig -o /boot/grub2/grub.cfg
+  when: grub_nvidia_check.rc != 0
 
 - name: Install lock-on-suspend system service
   become: true
@@ -34,3 +44,5 @@
     name: lock-on-suspend.service
     enabled: true
     daemon_reload: true
+
+# NOTE: Reboot required after NVIDIA driver install for kernel module to load.

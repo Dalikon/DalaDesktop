@@ -1,5 +1,5 @@
 ---
-# Enable RPM Fusion free — required for ffmpeg and other multimedia codecs
+# ── RPM Fusion ──────────────────────────────────────────────────────────────
 - name: Enable RPM Fusion free repository
   become: true
   dnf:
@@ -7,67 +7,221 @@
     state: present
     disable_gpg_check: true
 
-- name: Install Hyprland stack and supporting packages
+- name: Enable RPM Fusion nonfree repository
+  become: true
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
+
+# ── COPR repos ──────────────────────────────────────────────────────────────
+- name: Enable COPR repos
+  become: true
+  command: dnf copr enable -y {{ item }}
+  args:
+    creates: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ item | replace('/', ':') }}.repo"
+  loop:
+    - sdegler/hyprland          # main hyprland packages (solopasha no longer maintained)
+    - erikreider/SwayNotificationCenter
+    - errornointernet/packages  # wallust only — restricted below
+    - tofik/nwg-shell           # nwg-displays only — restricted below
+    - alternateved/eza
+    - atim/lazygit
+    - atim/lazydocker
+
+- name: Restrict errornointernet/packages to wallust only
+  become: true
+  lineinfile:
+    path: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:errornointernet:packages.repo"
+    line: "includepkgs=wallust"
+
+- name: Restrict tofik/nwg-shell to nwg-displays only
+  become: true
+  lineinfile:
+    path: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:tofik:nwg-shell.repo"
+    line: "includepkgs=nwg-displays"
+
+# ── Hyprland core ────────────────────────────────────────────────────────────
+- name: Install Hyprland core packages
   become: true
   dnf:
     name:
-      # Hyprland core (hyprpm is bundled with hyprland package)
       - hyprland
       - hyprlock
       - hypridle
-      # Wallpaper daemon and color theming
+      - hyprland-guiutils
+      - hyprpaper
+      - hyprpolkitagent  # official hypr polkit agent — coexists with lxqt-policykit
+      - uwsm             # installed but unused until login manager configured for it
+    state: present
+
+# ── Hyprland supporting packages ────────────────────────────────────────────
+- name: Install wallpaper and theming packages
+  become: true
+  dnf:
+    name:
       - swww
       - wallust
-      # Status bar
+      - ImageMagick
+    state: present
+
+- name: Install bar, launcher, notifications
+  become: true
+  dnf:
+    name:
       - waybar
-      # Notifications
       - SwayNotificationCenter
-      # App launcher
       - rofi
-      # Terminal
+      - wlogout
+    state: present
+
+- name: Install terminal and file manager
+  become: true
+  dnf:
+    name:
       - kitty
       - fzf
-      # File manager
       - Thunar
       - thunar-volman
       - thunar-archive-plugin
       - file-roller
-      # Bluetooth
-      - blueman
-      # Network tray
+      - gvfs
+      - gvfs-mtp
+    state: present
+
+- name: Install audio packages
+  become: true
+  dnf:
+    name:
+      - pipewire-alsa
+      - pipewire-utils
+      - pulseaudio-utils
+      - pamixer
+      - pavucontrol
+      - playerctl
+    state: present
+
+- name: Install network, bluetooth and peripherals
+  become: true
+  dnf:
+    name:
       - network-manager-applet
-      # XDG portals (screen sharing, file picker)
+      - blueman
+      - solaar        # Logitech peripheral manager
+    state: present
+
+- name: Install XDG portals and session tools
+  become: true
+  dnf:
+    name:
       - xdg-desktop-portal-hyprland
       - xdg-desktop-portal-gtk
-      # Clipboard
+      - xdg-user-dirs
+      - lxqt-policykit  # kept for gnome/sway compat alongside hyprpolkitagent
+    state: present
+
+- name: Install clipboard tools
+  become: true
+  dnf:
+    name:
       - wl-clipboard
       - cliphist
-      # Polkit auth agent
-      - lxqt-policykit
-      # Scripting utilities used by hyprland scripts
+    state: present
+
+- name: Install screenshot tools
+  become: true
+  dnf:
+    name:
+      - grim
+      - slurp
+      - swappy
+    state: present
+
+- name: Install brightness and display tools
+  become: true
+  dnf:
+    name:
+      - brightnessctl
+      - ddcutil       # external monitor brightness via DDC/CI
+    state: present
+
+- name: Install Qt theming packages
+  become: true
+  dnf:
+    name:
+      - kvantum
+      - kvantum-qt5
+      - qt5ct
+      - qt6ct
+      - qt5-qtdeclarative
+      - qt5-qtquickcontrols2
+      - qt6-qtdeclarative
+      - qt6-qtsvg
+    state: present
+
+- name: Install monitor layout tools
+  become: true
+  dnf:
+    name:
+      - nwg-displays
+      - nwg-look
+    state: present
+
+- name: Install media packages
+  become: true
+  dnf:
+    name:
+      - ffmpeg
+      - mpv
+    state: present
+
+- name: Install scripting and utility packages
+  become: true
+  dnf:
+    name:
       - socat
       - jq
       - bc
       - curl
       - wget
-      # Screenshots
-      - grim
-      - slurp
-      - swappy
-      # Wallpaper effects (ImageMagick) and video wallpapers (ffmpeg, mpv)
-      - ImageMagick
-      - ffmpeg
-      - mpv
-      # Monitor layout GUI
-      - nwg-displays
-      - nwg-look
-      # Media / audio controls
-      - playerctl
-      - brightnessctl
-      - pamixer
-      # Logitech peripheral manager
-      - solaar
-      # Build toolchain — cargo for sunsetr, rest needed by hyprpm to compile plugins (e.g. hy3)
+      - rsync
+      - openssl
+      - gawk
+      - findutils
+      - unzip
+      - inxi
+      - yad
+      - python3-requests
+      - python3-pyquery
+    state: present
+
+- name: Install system monitoring and misc apps
+  become: true
+  dnf:
+    name:
+      - btop
+      - nvtop
+      - cava
+      - fastfetch
+      - loupe           # image viewer
+      - qalculate-gtk
+    state: present
+
+# ── CLI tools from COPR ──────────────────────────────────────────────────────
+- name: Install CLI tools from COPR
+  become: true
+  dnf:
+    name:
+      - eza         # modern ls replacement
+      - lazygit     # TUI git client
+      - lazydocker  # TUI docker manager
+    state: present
+
+# ── Build toolchain — for sunsetr and hy3 plugin ────────────────────────────
+- name: Install build dependencies
+  become: true
+  dnf:
+    name:
       - cargo
       - cmake
       - meson
@@ -92,7 +246,7 @@
       - tomlplusplus-devel
     state: present
 
-# Build and install sunsetr (night-time colour temperature, not in Fedora repos)
+# ── sunsetr (night-time colour temperature, replaces hyprsunset) ─────────────
 - name: Create directory for sunsetr source
   file:
     path: "{{ repo_dir }}/InstallRepos/sunsetr"
@@ -119,7 +273,7 @@
     mode: '0755'
     remote_src: true
 
-# rofi-power-menu is a shell script, not packaged
+# ── rofi-power-menu ──────────────────────────────────────────────────────────
 - name: Download rofi-power-menu
   become: true
   get_url:
@@ -127,10 +281,11 @@
     dest: /usr/local/bin/rofi-power-menu
     mode: '0755'
 
-# Systemd user services — service files are already in place via the ~/.config symlink
+# ── Systemd user services ────────────────────────────────────────────────────
 - name: Reload user-level systemd daemon
   become: false
   shell: systemctl --user daemon-reload
+  changed_when: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
 
@@ -153,6 +308,20 @@
     scope: user
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
+
+# ── Input group — required for waybar keyboard-state module ──────────────────
+- name: Ensure input group exists
+  become: true
+  group:
+    name: input
+    state: present
+
+- name: Add user to input group
+  become: true
+  user:
+    name: "{{ user }}"
+    groups: input
+    append: true
 
 # NOTE: hy3 (i3-like tiling plugin) must be installed manually after first login:
 #   hyprpm add https://github.com/outfoxxed/hy3

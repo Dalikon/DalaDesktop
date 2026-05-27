@@ -121,6 +121,24 @@
   args:
     creates: /var/lib/flatpak/repo/flathub.flatpakrepo
 
+- name: Install FreeCAD via Flatpak
+  become: true
+  command: flatpak install -y flathub org.freecadweb.FreeCAD
+  args:
+    creates: /var/lib/flatpak/app/org.freecadweb.FreeCAD
+
+- name: Install Steam
+  become: true
+  dnf:
+    name: steam
+    state: present
+
+- name: Install Ferdium via Flatpak
+  become: true
+  command: flatpak install -y flathub org.ferdium.Ferdium
+  args:
+    creates: /var/lib/flatpak/app/org.ferdium.Ferdium
+
 # lazy.nvim (plugin manager) bootstraps itself automatically on the first
 # `nvim` run — no manual install step needed since the config is already
 # linked from DalaDesktop/configs/nvim/

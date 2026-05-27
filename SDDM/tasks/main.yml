@@ -1,0 +1,113 @@
+---
+# ── Install SDDM ─────────────────────────────────────────────────────────────
+- name: Install SDDM and Qt dependencies
+  become: true
+  dnf:
+    name:
+      - sddm
+      - qt6-qtvirtualkeyboard
+      - qt6-qtmultimedia
+      - qt6-qtdeclarative
+      - qt6-qtsvg
+    state: present
+
+# ── Disable conflicting login managers ───────────────────────────────────────
+- name: Disable conflicting login managers
+  become: true
+  systemd:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop:
+    - gdm
+    - lightdm
+    - lxdm
+    - lxdm-gtk3
+  failed_when: false  # service may not be installed — that's fine
+
+# ── Enable SDDM ──────────────────────────────────────────────────────────────
+- name: Set graphical.target as systemd default
+  become: true
+  command: systemctl set-default graphical.target
+  changed_when: false
+
+- name: Enable SDDM service
+  become: true
+  systemd:
+    name: sddm.service
+    enabled: true
+    daemon_reload: true
+
+- name: Ensure /usr/share/wayland-sessions directory exists
+  become: true
+  file:
+    path: /usr/share/wayland-sessions
+    state: directory
+    mode: '0755'
+
+# ── SDDM theme (simple-sddm-2) ───────────────────────────────────────────────
+- name: Ensure /usr/share/sddm/themes directory exists
+  become: true
+  file:
+    path: /usr/share/sddm/themes
+    state: directory
+    mode: '0755'
+
+- name: Remove existing simple_sddm_2 theme if present
+  become: true
+  file:
+    path: /usr/share/sddm/themes/simple_sddm_2
+    state: absent
+
+- name: Clone simple-sddm-2 theme
+  become: true
+  git:
+    repo: https://github.com/LinuxBeginnings/simple-sddm-2.git
+    dest: /usr/share/sddm/themes/simple_sddm_2
+    depth: 1
+
+# ── Configure /etc/sddm.conf ─────────────────────────────────────────────────
+- name: Ensure /etc/sddm.conf exists
+  become: true
+  file:
+    path: /etc/sddm.conf
+    state: touch
+    mode: '0644'
+
+- name: Ensure [Theme] section exists in sddm.conf
+  become: true
+  blockinfile:
+    path: /etc/sddm.conf
+    marker: "# {mark} ANSIBLE MANAGED — Theme"
+    block: |
+      [Theme]
+      Current=simple_sddm_2
+
+- name: Ensure [General] section exists in sddm.conf
+  become: true
+  blockinfile:
+    path: /etc/sddm.conf
+    marker: "# {mark} ANSIBLE MANAGED — General"
+    block: |
+      [General]
+      InputMethod=qtvirtualkeyboard
+
+# ── Copy JetBrains Mono Nerd Font for SDDM theme ─────────────────────────────
+# Fonts role must run before SDDM role — font is in ~/.local/share/fonts
+- name: Ensure SDDM font directory exists
+  become: true
+  file:
+    path: /usr/local/share/fonts/JetBrainsMonoNerd
+    state: directory
+    mode: '0755'
+
+- name: Copy JetBrains Mono Nerd Font to system fonts for SDDM
+  become: true
+  copy:
+    src: "/home/{{ user }}/.local/share/fonts/JetBrainsMonoNerd/"
+    dest: /usr/local/share/fonts/JetBrainsMonoNerd/
+    remote_src: true
+
+- name: Rebuild font cache for SDDM
+  command: fc-cache -f
+  changed_when: false
