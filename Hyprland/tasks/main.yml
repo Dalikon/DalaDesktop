@@ -55,6 +55,27 @@
       - uwsm             # installed but unused until login manager configured for it
     state: present
 
+# ── hyprpm build dependencies ────────────────────────────────────────────────
+- name: Install hyprpm build dependencies
+  become: true
+  dnf:
+    name:
+      - libglvnd-devel
+      - mesa-libGL-devel
+      - glslang-devel
+      - libxkbcommon-devel
+      - wayland-devel
+      - cairo-devel
+      - pango-devel
+      - pixman-devel
+      - libXcursor-devel
+      - glib2-devel
+      - muParser-devel
+      - lcms2-devel
+      - hyprwire-devel
+      - lua-devel
+    state: present
+
 # ── Hyprland supporting packages ────────────────────────────────────────────
 - name: Install wallpaper and theming packages
   become: true
