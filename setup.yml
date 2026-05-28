@@ -74,6 +74,13 @@
         state: link
         force: yes
 
+    - name: Symlink tmux-sessionizer to ~/.local/bin
+      file:
+        src: "{{ repo_dir }}/CpToHome/.local/bin/tmux-sessionizer"
+        dest: "/home/{{ user }}/.local/bin/tmux-sessionizer"
+        state: link
+        force: yes
+
     - name: Ensure ~/.ssh directory exists with correct permissions
       file:
         path: "/home/{{ user }}/.ssh"
