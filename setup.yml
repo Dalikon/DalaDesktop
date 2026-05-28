@@ -113,6 +113,6 @@
     - role: BraveBrowser
     - role: InstallObsidian
     - role: SDDM
-      when: install_sddm
+      when: install_sddm | bool
     - role: NvidiaDriversFedora
-      when: install_nvidia
+      when: install_nvidia | bool
