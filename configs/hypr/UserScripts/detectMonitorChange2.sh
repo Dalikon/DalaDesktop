@@ -3,7 +3,7 @@
 CONFIGURE_DELAY=0.25
 TMP_FLAG="/tmp/hypr_monitor_event"
 MONITOR_DIR="$HOME/.config/hypr/Monitor_Profiles"
-CURRENT_CONF="$HOME/.config/hypr/monitors.conf"
+CURRENT_CONF="$HOME/.config/hypr/monitors.lua"
 SCRIPTS_DIR="$HOME/.config/hypr/scripts"
 
 configure_monitors() {
@@ -14,18 +14,18 @@ configure_monitors() {
     if [[ "$MONITORS_JSON" == *"[]"* ]] || \
         echo "$MONITORS_JSON" | jq -e '(( [.[] | .id] | sort ) == [0]) or (any(.[]; .name == "FALLBACK"))' > /dev/null; then
         echo "Only laptop setup"
-        cp "$MONITOR_DIR/laptop_only.conf" "$CURRENT_CONF"
+        cp "$MONITOR_DIR/laptop_only.lua" "$CURRENT_CONF"
 		ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Laptop" /home/dala/.config/waybar/config
 
     elif echo "$MONITORS_JSON" | jq -e '( [.[] | .id] | sort ) == [0,1,2]' > /dev/null; then
         echo "Dual monitor home setup"
-        cp "$MONITOR_DIR/koleje.conf" "$CURRENT_CONF"
+        cp "$MONITOR_DIR/koleje.lua" "$CURRENT_CONF"
 		ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Koleje" /home/dala/.config/waybar/config
 
     elif echo "$MONITORS_JSON" | jq -e '( [.[] | .id] | sort ) == [0,1]' > /dev/null; then
         echo "Single external monitor setup"
         ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Laptop" /home/dala/.config/waybar/config
-        cp "$MONITOR_DIR/hdmi_only.conf" "$CURRENT_CONF"
+        cp "$MONITOR_DIR/hdmi_only.lua" "$CURRENT_CONF"
     fi
 
     systemctl --user restart waybar.service
@@ -79,5 +79,9 @@ handle() {
         schedule_configuration
     fi
    }
+
+# Run once at startup to correct any stale profile from the previous session
+# (the service already waits 3s before exec, so Hyprland is ready by now)
+configure_monitors
 
 socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
