@@ -10,10 +10,7 @@ local mod      = "SUPER"
 local term  = "kitty"
 local files = "thunar"
 
--- hy3 plugin dispatchers (wrapped via hyprctl until hy3 exposes a native Lua API)
-local function hy3(action, arg)
-    return function() hl.exec_cmd("hyprctl dispatch hy3:" .. action .. " " .. arg) end
-end
+local hy3 = hl.plugin.hy3
 
 ---------------------------------------------------------------------------
 -- Session
@@ -48,17 +45,17 @@ hl.bind(mod .. " + M",             hl.dsp.exec_cmd("hyprctl dispatch splitratio 
 ---------------------------------------------------------------------------
 -- hy3 focus and window movement
 ---------------------------------------------------------------------------
-hl.bind(mod .. " + left",  hy3("movefocus", "l"))
-hl.bind(mod .. " + right", hy3("movefocus", "r"))
-hl.bind(mod .. " + up",    hy3("movefocus", "u"))
-hl.bind(mod .. " + down",  hy3("movefocus", "d"))
+hl.bind(mod .. " + left",  hy3.move_focus("l"))
+hl.bind(mod .. " + right", hy3.move_focus("r"))
+hl.bind(mod .. " + up",    hy3.move_focus("u"))
+hl.bind(mod .. " + down",  hy3.move_focus("d"))
 
-hl.bind(mod .. " + SHIFT + left",  hy3("movewindow", "l"))
-hl.bind(mod .. " + SHIFT + right", hy3("movewindow", "r"))
-hl.bind(mod .. " + SHIFT + up",    hy3("movewindow", "u"))
-hl.bind(mod .. " + SHIFT + down",  hy3("movewindow", "d"))
+hl.bind(mod .. " + SHIFT + left",  hy3.move_window("l"))
+hl.bind(mod .. " + SHIFT + right", hy3.move_window("r"))
+hl.bind(mod .. " + SHIFT + up",    hy3.move_window("u"))
+hl.bind(mod .. " + SHIFT + down",  hy3.move_window("d"))
 
-hl.bind(mod .. " + T", hy3("changegroup", "toggletab"))
+hl.bind(mod .. " + T", hy3.change_group("toggletab"))
 
 ---------------------------------------------------------------------------
 -- Window state
