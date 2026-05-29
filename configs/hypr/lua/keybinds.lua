@@ -17,7 +17,7 @@ local hy3 = hl.plugin.hy3
 ---------------------------------------------------------------------------
 hl.bind("CTRL + ALT + Delete", hl.dsp.exit())
 hl.bind(mod .. " + Q",         hl.dsp.window.close())
-hl.bind(mod .. " + SHIFT + Q", hl.dsp.exec_cmd(scripts .. "/KillActiveProcess.sh"))
+hl.bind(mod .. " + SHIFT + Q", hl.dsp.window.kill())
 hl.bind(mod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind(mod .. " + X",         hl.dsp.exec_cmd(scripts  .. "/LockScreen.sh"))
 hl.bind(mod .. " + CTRL + X",  hl.dsp.exec_cmd(uscripts .. "/LockAndSuspend.sh"))
@@ -104,14 +104,11 @@ hl.bind(mod .. " + W",         hl.dsp.workspace.toggle_special("workflow"))
 for i = 1, 10 do
     local code = "code:" .. (9 + i)
     hl.bind(mod ..              " + " .. code, hl.dsp.focus({ workspace = i }))
-    hl.bind(mod .. " + CTRL + " .. code,       hl.dsp.window.move({ workspace = i }))
-    hl.bind(mod .. " + SHIFT + " .. code,      hl.dsp.window.move({ workspace = i, silent = true }))
+    hl.bind(mod .. " + SHIFT + " .. code,      hl.dsp.window.move({ workspace = i, follow = false }))
 end
 
-hl.bind(mod .. " + CTRL + bracketleft",   hl.dsp.window.move({ workspace = "-1" }))
-hl.bind(mod .. " + CTRL + bracketright",  hl.dsp.window.move({ workspace = "+1" }))
-hl.bind(mod .. " + SHIFT + bracketleft",  hl.dsp.window.move({ workspace = "-1", silent = true }))
-hl.bind(mod .. " + SHIFT + bracketright", hl.dsp.window.move({ workspace = "+1", silent = true }))
+hl.bind(mod .. " + SHIFT + bracketleft",  hl.dsp.window.move({ workspace = "-1", follow = false }))
+hl.bind(mod .. " + SHIFT + bracketright", hl.dsp.window.move({ workspace = "+1", follow = false }))
 
 ---------------------------------------------------------------------------
 -- Media keys
@@ -145,7 +142,12 @@ hl.bind(mod .. " + ALT + R",    hl.dsp.exec_cmd(uscripts .. "/Refresh.sh"))
 hl.bind(mod .. " + ALT + E",    hl.dsp.exec_cmd(scripts  .. "/RofiEmoji.sh"))
 hl.bind(mod .. " + ALT + V",    hl.dsp.exec_cmd(scripts  .. "/ClipManager.sh"))
 hl.bind(mod .. " + CTRL + R",   hl.dsp.exec_cmd(scripts  .. "/RofiThemeSelector.sh"))
-hl.bind(mod .. " + CTRL + S",   hl.dsp.exec_cmd(uscripts .. "/swapWorkspaces.sh"))
+hl.bind(mod .. " + CTRL + S",   function()
+    local mons = hl.get_monitors()
+    if #mons == 2 then
+        hl.dispatch(hl.dsp.workspace.swap_monitors({ monitor1 = mons[1].name, monitor2 = mons[2].name }))
+    end
+end)
 hl.bind(mod .. " + SHIFT + M",  hl.dsp.exec_cmd(uscripts .. "/RofiBeats.sh"))
 hl.bind(mod .. " + SHIFT + W",  hl.dsp.exec_cmd(uscripts .. "/WallpaperSelect.sh"))
 hl.bind(mod .. " + SHIFT + K",  hl.dsp.exec_cmd(scripts  .. "/KeyBinds.sh"))
