@@ -9,8 +9,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("swww-daemon --format xrgb")
 
     -- DBus / systemd environment propagation
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_ID")
+    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_ID")
 
     -- Polkit authentication agent
     hl.exec_cmd(scripts .. "/Polkit.sh")

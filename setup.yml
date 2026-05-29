@@ -108,18 +108,27 @@
       command: id -u {{ user }}
       register: user_uid
       changed_when: false
+      tags: [always]
 
     - name: Set UID fact
       set_fact:
         uid: "{{ user_uid.stdout }}"
+      tags: [always]
 
   roles:
     - role: Hyprland
+      tags: [Hyprland]
     - role: BasePrograms
+      tags: [BasePrograms]
     - role: Fonts
+      tags: [Fonts]
     - role: BraveBrowser
+      tags: [BraveBrowser]
     - role: InstallObsidian
+      tags: [InstallObsidian]
     - role: SDDM
       when: install_sddm | bool
+      tags: [SDDM]
     - role: NvidiaDriversFedora
       when: install_nvidia | bool
+      tags: [NvidiaDriversFedora]
