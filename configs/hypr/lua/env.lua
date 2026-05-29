@@ -31,3 +31,6 @@ hl.env("MOZ_ENABLE_WAYLAND", "1")
 
 -- Electron (>= 28): prefer Wayland, fall back to X11
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+
+-- Docker: lazydocker compiled with old SDK (caps at v1.25), Docker Engine 29+ requires >= 1.40
+hl.env("DOCKER_API_VERSION", "1.54")

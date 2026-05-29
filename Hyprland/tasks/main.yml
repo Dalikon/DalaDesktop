@@ -26,8 +26,13 @@
     - errornointernet/packages  # wallust only — restricted below
     - tofik/nwg-shell           # nwg-displays only — restricted below
     - alternateved/eza
-    - atim/lazygit
-    - atim/lazydocker
+    - relativesure/all-packages
+
+- name: Restrict relativesure/all-packages to lazygit and lazydocker only
+  become: true
+  lineinfile:
+    path: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:relativesure:all-packages.repo"
+    line: "includepkgs=lazydocker* lazygit*"
 
 - name: Restrict errornointernet/packages to wallust only
   become: true
