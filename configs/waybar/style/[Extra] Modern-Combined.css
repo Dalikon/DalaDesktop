@@ -30,7 +30,18 @@
 @define-color iconcolor #FFFFFF;
 
 @import '../../.config/waybar/wallust/colors-waybar.css';
-@import "../waybar/style/catppuccin-themes/latte.css";
+
+/* Catppuccin Latte colors (inlined — no longer depends on deleted catppuccin-themes/) */
+@define-color rosewater #dc8a78;
+@define-color peach     #fe640b;
+@define-color yellow    #df8e1d;
+@define-color green     #40a02b;
+@define-color teal      #179299;
+@define-color sky       #04a5e5;
+@define-color sapphire  #209fb5;
+@define-color mauve     #8839ef;
+@define-color red       #d20f39;
+@define-color lavender  #7287fd;
 
 * {
     font-family: "JetBrainsMono Nerd Font";

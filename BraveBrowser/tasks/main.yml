@@ -8,6 +8,8 @@
 - name: Add brave repo
   command: dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
   become: yes
+  args:
+    creates: /etc/yum.repos.d/brave-browser.repo
 
   #- name: rpm import
   #command: rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc

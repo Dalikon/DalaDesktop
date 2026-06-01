@@ -4,38 +4,21 @@ return {
     lazy = false,
     priority = 10,
     config = function()
-       -- Load Onedark Vivid first (syntax)
-       vim.cmd.colorscheme("onedark_vivid")
-
-       -- Save Onedark syntax highlights
-       local function copy_highlight(group)
-         local g = vim.api.nvim_get_hl(0, { name = group })
-         vim.api.nvim_set_hl(0, group, g)
-       end
-
        local syntax_groups = {
-         "Comment",
-         "Constant",
-         "String",
-         "Identifier",
-         "Function",
-         "Statement",
-         "Conditional",
-         "Repeat",
-         "Operator",
-         "Type",
-         "Keyword",
+         "Comment", "Constant", "String", "Identifier", "Function",
+         "Statement", "Conditional", "Repeat", "Operator", "Type", "Keyword",
        }
 
+       -- Save Onedark Vivid syntax highlights (already loaded by onedarkpro at higher priority)
        local onedark_syntax = {}
        for _, g in ipairs(syntax_groups) do
-         onedark_syntax[g] = vim.api.nvim_get_hl_by_name(g, true)
+         onedark_syntax[g] = vim.api.nvim_get_hl(0, { name = g })
        end
 
-       -- Now load Kanagawa Dragon (background, Normal, floats)
+       -- Load Kanagawa Dragon (background, Normal, floats, UI)
        vim.cmd.colorscheme("kanagawa-dragon")
 
-       -- Restore Onedark syntax groups
+       -- Restore Onedark syntax colours on top of kanagawa background
        for group, hl in pairs(onedark_syntax) do
          vim.api.nvim_set_hl(0, group, hl)
        end
@@ -81,9 +64,7 @@ return {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("trouble").setup({
-        use_diagnostic_signs = true,
-      })
+      require("trouble").setup({})
     end,
     keys = {
       {

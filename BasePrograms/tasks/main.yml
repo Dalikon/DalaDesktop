@@ -1,45 +1,147 @@
-- name: Install the base programs
-  become: yes
+---
+- name: Install base programs
+  become: true
   dnf:
     name:
+      # Development
       - neovim
+      - tmux
+      - git
+      - python3
+      - python3-pip
+      - golang
+      - nodejs
+      - npm
+      # Browsers (brave installed separately via BraveBrowser role)
       - firefox
-      - gimp
-      #- freecad
-      #- balena
+      # Productivity / creativity
+      - flatpak
       - obs-studio
+      - krita
+      - gimp
       - cheese
       - prusa-slicer
       - gthumb
-      - snapd
       - gnome-calculator
-      - xprop
-      - xdotool
-      - pip
-      - prusa-slicer
-      - solaar
-      - krita
-      - go
       - virt-manager
     state: present
 
-- name: Create .vim link
+# LSP servers for Neovim
+- name: Install typescript-language-server and pyright via npm
+  become: true
+  npm:
+    name: "{{ item }}"
+    global: true
+    state: present
+  loop:
+    - typescript-language-server
+    - typescript
+    - pyright
+
+# lua-language-server — not in Fedora repos, install from GitHub release
+- name: Get latest lua-language-server release URL
+  uri:
+    url: https://api.github.com/repos/LuaLS/lua-language-server/releases/latest
+    return_content: true
+  register: luals_release
+
+- name: Set lua-language-server download URL
+  set_fact:
+    luals_url: "{{ luals_release.json.assets | selectattr('name', 'match', '.*linux-x64\\.tar\\.gz') | map(attribute='browser_download_url') | first }}"
+
+- name: Create lua-language-server install directory
   file:
-    src: "{{ ansible_env.PWD }}/nvimrc/.vim"
-    dest: "/home/{{ user }}/.vim"
+    path: "/home/{{ user }}/.local/share/lua-language-server"
+    state: directory
+
+- name: Download and extract lua-language-server
+  unarchive:
+    src: "{{ luals_url }}"
+    dest: "/home/{{ user }}/.local/share/lua-language-server"
+    remote_src: true
+    creates: "/home/{{ user }}/.local/share/lua-language-server/bin/lua-language-server"
+
+- name: Install lua-language-server wrapper script
+  copy:
+    dest: "/home/{{ user }}/.local/bin/lua-language-server"
+    content: |
+      #!/bin/bash
+      exec "$HOME/.local/share/lua-language-server/bin/lua-language-server" "$@"
+    mode: '0755'
+
+# Python formatters/tools used by conform.nvim
+- name: Install Python dev tools
+  become: false
+  pip:
+    name:
+      - black
+    extra_args: --user
+    state: present
+
+# marksman (Markdown LSP) — not in Fedora repos
+- name: Get latest marksman release URL
+  uri:
+    url: https://api.github.com/repos/artempyanykh/marksman/releases/latest
+    return_content: true
+  register: marksman_release
+
+- name: Set marksman download URL
+  set_fact:
+    marksman_url: "{{ marksman_release.json.assets | selectattr('name', 'equalto', 'marksman-linux-x64') | map(attribute='browser_download_url') | first }}"
+
+- name: Download marksman
+  get_url:
+    url: "{{ marksman_url }}"
+    dest: "/home/{{ user }}/.local/bin/marksman"
+    mode: '0755'
+
+# stylua (Lua formatter) — used by conform.nvim, not in Fedora repos
+- name: Install stylua via cargo
+  become: false
+  command: cargo install stylua
+  args:
+    creates: "/home/{{ user }}/.cargo/bin/stylua"
+
+- name: Symlink stylua to ~/.local/bin
+  file:
+    src: "/home/{{ user }}/.cargo/bin/stylua"
+    dest: "/home/{{ user }}/.local/bin/stylua"
     state: link
 
-- name: Download yarn
-  command: npm install -g yarn
-  become: yes
+# TPM — tmux plugin manager (required for tmux-resurrect and tmux-continuum)
+- name: Clone TPM
+  git:
+    repo: https://github.com/tmux-plugins/tpm.git
+    dest: "/home/{{ user }}/.tmux/plugins/tpm"
+    update: yes
 
-- name: Download vimplug
-  command: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+- name: Add Flathub repository
+  become: true
+  command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  args:
+    creates: /var/lib/flatpak/repo/flathub.flatpakrepo
 
-- name: install nvim plugins
-  command: nvim +PlugInstall +qall
+- name: Install FreeCAD via Flatpak
+  become: true
+  command: flatpak install -y flathub org.freecadweb.FreeCAD
+  args:
+    creates: /var/lib/flatpak/app/org.freecadweb.FreeCAD
 
-  #- name: install markdown plugin
-  #  command: nvim +call\ mkdp#util#install()
+- name: Install Steam
+  become: true
+  dnf:
+    name: steam
+    state: present
 
+- name: Install Ferdium via Flatpak
+  become: true
+  command: flatpak install -y flathub org.ferdium.Ferdium
+  args:
+    creates: /var/lib/flatpak/app/org.ferdium.Ferdium
 
+# lazy.nvim (plugin manager) bootstraps itself automatically on the first
+# `nvim` run — no manual install step needed since the config is already
+# linked from DalaDesktop/configs/nvim/
+
+# NOTE: After first nvim run, tmux plugins must be installed manually:
+#   tmux then prefix + I (Ctrl-b I) to install plugins via TPM

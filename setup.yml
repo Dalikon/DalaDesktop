@@ -1,80 +1,134 @@
 - hosts: localhost
   connection: local
-    #vars_files:
-    #- vars/{{ config_file }}.yml
   vars:
-     user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
+    user: "{{ lookup('env', 'USER') | default(lookup('env', 'LOGNAME')) }}"
+    repo_dir: "/home/{{ user }}/DalaDesktop"
+
+    # ── Optional roles ─────────────────────────────────────────────────────
+    # Set false on machines where you want to keep an existing login manager
+    # (e.g. GNOME on a work laptop)
+    install_sddm: true
+
+    # Set true on machines with an NVIDIA GPU
+    install_nvidia: false
 
   pre_tasks:
-    - name: Create folder for repos needed
+    - name: Create InstallRepos directory
       file:
-        path: "/home/{{ user }}/DalaDesktop/InstallRepos"
+        path: "{{ repo_dir }}/InstallRepos"
         state: directory
-  
-    #- name: Create folder for i3-glibc
-    #  file:
-    #    path: "/home/{{ user }}/DalaDesktop/InstallRepos/i3ipc-glibc"
-    #    state: directory
-        
-    #- name: create folder for xfce4-i3-workspaces-plugin
-    #  file:
-    #    path: "/home/{{ user }}/DalaDesktop/InstallRepos/xfce4-i3-workspaces-plugin"
-    #    state: directory
 
-    - name: Backup original configs
-      copy:
-        src: "/home/{{ user }}/.config"
-        dest: "/home/{{ user }}/configs-orig-backup"
-    
-    - name: Remove original directory
-      file:
-          path: "/home/{{ user }}/.config"
-          state: absent
+    - name: Stat ~/.config
+      stat:
+        path: "/home/{{ user }}/.config"
+      register: config_stat
 
-    - name: Create the .config directory
+    - name: Backup ~/.config if it is a real directory (not a symlink)
+      command: mv /home/{{ user }}/.config /home/{{ user }}/.config-backup-{{ ansible_date_time.epoch }}
+      when: config_stat.stat.exists and not config_stat.stat.islnk
+
+    - name: Symlink ~/.config to repo configs
       file:
-        src: "/home/{{ user }}/DalaDesktop/configs"
+        src: "{{ repo_dir }}/configs"
         dest: "/home/{{ user }}/.config"
         state: link
+        force: yes
 
-    - name: Ensure that bashrc is not already present
+    - name: Symlink ~/.bashrc
       file:
-        path: "/home/{{ user }}/.bashrc"
-        state: absent
-
-    - name: Copy bashrc
-      file:
-        src: "/home/{{ user }}/DalaDesktop/CpToHome/.bashrc"
+        src: "{{ repo_dir }}/CpToHome/.bashrc"
         dest: "/home/{{ user }}/.bashrc"
         state: link
+        force: yes
 
-    - name: Copy dircolors
+    - name: Symlink ~/.dircolors
       file:
-        src: "/home/{{ user }}/DalaDesktop/CpToHome/.dircolors"
+        src: "{{ repo_dir }}/CpToHome/.dircolors"
         dest: "/home/{{ user }}/.dircolors"
         state: link
+        force: yes
 
-    #- name: create picture folder
-    #  file:
-    #    path: "/home/{{ user }}/Pictures/wallpapers"
-    #    state: directory
+    - name: Symlink ~/.bash_profile
+      file:
+        src: "{{ repo_dir }}/CpToHome/.bash_profile"
+        dest: "/home/{{ user }}/.bash_profile"
+        state: link
+        force: yes
 
-    - name: copy backgrounds
+    - name: Symlink ~/.gitconfig
+      file:
+        src: "{{ repo_dir }}/CpToHome/.gitconfig"
+        dest: "/home/{{ user }}/.gitconfig"
+        state: link
+        force: yes
+
+    - name: Ensure ~/.local/bin directory exists
+      file:
+        path: "/home/{{ user }}/.local/bin"
+        state: directory
+
+    - name: Symlink tmux-cht.sh to ~/.local/bin
+      file:
+        src: "{{ repo_dir }}/CpToHome/.local/bin/tmux-cht.sh"
+        dest: "/home/{{ user }}/.local/bin/tmux-cht.sh"
+        state: link
+        force: yes
+
+    - name: Symlink tmux-sessionizer to ~/.local/bin
+      file:
+        src: "{{ repo_dir }}/CpToHome/.local/bin/tmux-sessionizer"
+        dest: "/home/{{ user }}/.local/bin/tmux-sessionizer"
+        state: link
+        force: yes
+
+    - name: Ensure ~/.ssh directory exists with correct permissions
+      file:
+        path: "/home/{{ user }}/.ssh"
+        state: directory
+        mode: '0700'
+
+    - name: Symlink ~/.ssh/config
+      file:
+        src: "{{ repo_dir }}/CpToHome/.ssh/config"
+        dest: "/home/{{ user }}/.ssh/config"
+        state: link
+        force: yes
+
+    - name: Ensure wallpapers directory exists
+      file:
+        path: "/home/{{ user }}/Pictures/wallpapers"
+        state: directory
+
+    - name: Copy bundled wallpapers
       copy:
-        src: "/home/{{ user }}/DalaDesktop/Backgrounds/"
+        src: "{{ repo_dir }}/Backgrounds/"
         dest: "/home/{{ user }}/Pictures/wallpapers"
-    
+
     - name: Get UID of target user
       command: id -u {{ user }}
       register: user_uid
       changed_when: false
+      tags: [always]
 
     - name: Set UID fact
       set_fact:
         uid: "{{ user_uid.stdout }}"
+      tags: [always]
 
   roles:
     - role: Hyprland
+      tags: [Hyprland]
     - role: BasePrograms
+      tags: [BasePrograms]
+    - role: Fonts
+      tags: [Fonts]
     - role: BraveBrowser
+      tags: [BraveBrowser]
     - role: InstallObsidian
+      tags: [InstallObsidian]
+    - role: SDDM
+      when: install_sddm | bool
+      tags: [SDDM]
+    - role: NvidiaDriversFedora
+      when: install_nvidia | bool
+      tags: [NvidiaDriversFedora]

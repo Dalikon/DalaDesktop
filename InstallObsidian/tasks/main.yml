@@ -15,5 +15,5 @@
   become: yes
   command: flatpak install -y flathub md.obsidian.Obsidian
   args:
-    creates: /var/lib/flatpak/appstream/md.obsidian.Obsidian
+    creates: /var/lib/flatpak/app/md.obsidian.Obsidian
 

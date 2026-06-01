@@ -1,0 +1,88 @@
+---
+# ── System fonts via dnf ─────────────────────────────────────────────────────
+- name: Install system fonts
+  become: true
+  dnf:
+    name:
+      - adobe-source-code-pro-fonts
+      - fira-code-fonts
+      - fontawesome-fonts-all
+      - google-droid-sans-fonts
+      - google-noto-sans-cjk-fonts
+      - google-noto-color-emoji-fonts
+      - google-noto-emoji-fonts
+      - jetbrains-mono-fonts
+    state: present
+
+# ── JetBrains Mono Nerd Font ─────────────────────────────────────────────────
+- name: Ensure JetBrainsMonoNerd font directory exists
+  file:
+    path: "/home/{{ user }}/.local/share/fonts/JetBrainsMonoNerd"
+    state: directory
+
+- name: Download JetBrains Mono Nerd Font
+  get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
+    dest: /tmp/JetBrainsMono.tar.xz
+
+- name: Extract JetBrains Mono Nerd Font
+  unarchive:
+    src: /tmp/JetBrainsMono.tar.xz
+    dest: "/home/{{ user }}/.local/share/fonts/JetBrainsMonoNerd"
+    remote_src: true
+    extra_opts: ['--keep-newer-files']
+
+- name: Remove JetBrains Mono Nerd Font archive
+  file:
+    path: /tmp/JetBrainsMono.tar.xz
+    state: absent
+
+# ── Fantasque Sans Mono Nerd Font ────────────────────────────────────────────
+- name: Ensure FantasqueSansMono font directory exists
+  file:
+    path: "/home/{{ user }}/.local/share/fonts/FantasqueSansMonoNerd"
+    state: directory
+
+- name: Download Fantasque Sans Mono Nerd Font
+  get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FantasqueSansMono.zip
+    dest: /tmp/FantasqueSansMono.zip
+
+- name: Extract Fantasque Sans Mono Nerd Font
+  unarchive:
+    src: /tmp/FantasqueSansMono.zip
+    dest: "/home/{{ user }}/.local/share/fonts/FantasqueSansMonoNerd"
+    remote_src: true
+
+- name: Remove Fantasque Sans Mono archive
+  file:
+    path: /tmp/FantasqueSansMono.zip
+    state: absent
+
+# ── Victor Mono Font ─────────────────────────────────────────────────────────
+- name: Ensure VictorMono font directory exists
+  file:
+    path: "/home/{{ user }}/.local/share/fonts/VictorMono"
+    state: directory
+
+- name: Download Victor Mono Font
+  get_url:
+    url: https://rubjo.github.io/victor-mono/VictorMonoAll.zip
+    dest: /tmp/VictorMonoAll.zip
+
+- name: Extract Victor Mono Font
+  unarchive:
+    src: /tmp/VictorMonoAll.zip
+    dest: "/home/{{ user }}/.local/share/fonts/VictorMono"
+    remote_src: true
+
+- name: Remove Victor Mono archive
+  file:
+    path: /tmp/VictorMonoAll.zip
+    state: absent
+
+# ── Rebuild font cache ────────────────────────────────────────────────────────
+- name: Rebuild font cache
+  command: fc-cache -f
+  become: false
+  changed_when: false

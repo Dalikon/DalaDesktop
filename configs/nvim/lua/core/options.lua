@@ -50,10 +50,10 @@ opt.pumheight = 10         -- limit completion popup height so it doesn't take o
 vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
 vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
 
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,localoptions"
 
 opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldenable = false    -- don't fold everything on file open
 opt.foldlevel = 99        -- start with everything unfolded
 

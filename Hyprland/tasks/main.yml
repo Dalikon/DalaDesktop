@@ -1,46 +1,261 @@
-- name: Download JaKoolit's fedora hyprland installer
-  get_url:
-    url: 'https://raw.githubusercontent.com/JaKooLit/Fedora-Hyprland/main/auto-install.sh'
-    dest: '/tmp/jakoolit-installer.sh'
-    mode: '0755'
-
-#- name: Run JaKooLits Fedora-Hyprland installer script
-#  expect: 
-#    command: 'bash /tmp/jakoolit-installer.sh'
-#    interact: yes
-
-- name: User needs to run the jakoolits installer
-  pause:
-    prompt: |
-      ======================================================================
-      MANUAL INTERACTION REQUIRED:
-      Please open a NEW TERMINAL (do NOT close this one!).
-      Navigate to: /home/{{ user }}/DalaDesktop/InstallRepos
-      Then run the JaKooLit installation script MANUALLY:
-      sh <(curl -L https://raw.githubusercontent.com/JaKooLit/Fedora-Hyprland/main/auto-install.sh)
-      
-      Follow all the prompts in the NEW TERMINAL to complete the installation.
-      Once the JaKooLit installer finishes,
-      RETURN TO THIS TERMINAL AND PRESS ENTER to continue the Ansible playbook.
-      ======================================================================
-
-- name: reset become
-  command: "true"
+---
+# ── RPM Fusion ──────────────────────────────────────────────────────────────
+- name: Enable RPM Fusion free repository
   become: true
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
 
-- name: Install packages needed for this instalation to function outside JaKooLits script
+- name: Enable RPM Fusion nonfree repository
+  become: true
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    disable_gpg_check: true
+
+# ── COPR repos ──────────────────────────────────────────────────────────────
+- name: Enable COPR repos
+  become: true
+  command: dnf copr enable -y {{ item }}
+  args:
+    creates: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ item | replace('/', ':') }}.repo"
+  loop:
+    - sdegler/hyprland          # main hyprland packages (solopasha no longer maintained)
+    - erikreider/SwayNotificationCenter
+    - errornointernet/packages  # wallust only — restricted below
+    - tofik/nwg-shell           # nwg-displays only — restricted below
+    - alternateved/eza
+    - relativesure/all-packages
+
+- name: Restrict relativesure/all-packages to lazygit and lazydocker only
+  become: true
+  lineinfile:
+    path: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:relativesure:all-packages.repo"
+    line: "includepkgs=lazydocker* lazygit*"
+
+- name: Restrict errornointernet/packages to wallust only
+  become: true
+  lineinfile:
+    path: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:errornointernet:packages.repo"
+    line: "includepkgs=wallust"
+
+- name: Restrict tofik/nwg-shell to nwg-displays only
+  become: true
+  lineinfile:
+    path: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:tofik:nwg-shell.repo"
+    line: "includepkgs=nwg-displays"
+
+# ── Hyprland core ────────────────────────────────────────────────────────────
+- name: Install Hyprland core packages
   become: true
   dnf:
     name:
-      - hyprsunset
+      - hyprland
+      - hyprlock
+      - hypridle
+      - hyprland-guiutils
+      - hyprpaper
+      - hyprpolkitagent  # official hypr polkit agent — coexists with lxqt-policykit
+      - uwsm             # installed but unused until login manager configured for it
+    state: present
+
+# ── hyprpm build dependencies ────────────────────────────────────────────────
+- name: Install hyprpm build dependencies
+  become: true
+  dnf:
+    name:
+      - libglvnd-devel
+      - mesa-libGL-devel
+      - glslang-devel
+      - libxkbcommon-devel
+      - wayland-devel
+      - cairo-devel
+      - pango-devel
+      - pixman-devel
+      - libXcursor-devel
+      - glib2-devel
+      - muParser-devel
+      - lcms2-devel
+      - hyprwire-devel
+      - lua-devel
+    state: present
+
+# ── Hyprland supporting packages ────────────────────────────────────────────
+- name: Install wallpaper and theming packages
+  become: true
+  dnf:
+    name:
+      - swww
+      - wallust
+      - ImageMagick
+    state: present
+
+- name: Install bar, launcher, notifications
+  become: true
+  dnf:
+    name:
+      - waybar
+      - SwayNotificationCenter
+      - rofi
+      - wlogout
+    state: present
+
+- name: Install terminal and file manager
+  become: true
+  dnf:
+    name:
+      - kitty
+      - fzf
+      - Thunar
+      - thunar-volman
+      - thunar-archive-plugin
+      - file-roller
+      - gvfs
+      - gvfs-mtp
+    state: present
+
+- name: Install audio packages
+  become: true
+  dnf:
+    name:
+      - pipewire-alsa
+      - pipewire-utils
+      - pulseaudio-utils
+      - pamixer
+      - pavucontrol
+      - playerctl
+    state: present
+
+- name: Install network, bluetooth and peripherals
+  become: true
+  dnf:
+    name:
+      - network-manager-applet
+      - blueman
+      - solaar        # Logitech peripheral manager
+    state: present
+
+- name: Install XDG portals and session tools
+  become: true
+  dnf:
+    name:
+      - xdg-desktop-portal-hyprland
+      - xdg-desktop-portal-gtk
+      - xdg-user-dirs
+      - lxqt-policykit  # kept for gnome/sway compat alongside hyprpolkitagent
+    state: present
+
+- name: Install clipboard tools
+  become: true
+  dnf:
+    name:
+      - wl-clipboard
+      - cliphist
+    state: present
+
+- name: Install screenshot tools
+  become: true
+  dnf:
+    name:
+      - grim
+      - slurp
+      - swappy
+    state: present
+
+- name: Install brightness and display tools
+  become: true
+  dnf:
+    name:
+      - brightnessctl
+      - ddcutil       # external monitor brightness via DDC/CI
+    state: present
+
+- name: Install Qt theming packages
+  become: true
+  dnf:
+    name:
+      - kvantum
+      - kvantum-qt5
+      - qt5ct
+      - qt6ct
+      - qt5-qtdeclarative
+      - qt5-qtquickcontrols2
+      - qt6-qtdeclarative
+      - qt6-qtsvg
+    state: present
+
+- name: Install monitor layout tools
+  become: true
+  dnf:
+    name:
+      - nwg-displays
+      - nwg-look
+    state: present
+
+- name: Install media packages
+  become: true
+  dnf:
+    name:
+      - ffmpeg
+      - mpv
+    state: present
+    allowerasing: true
+
+- name: Install scripting and utility packages
+  become: true
+  dnf:
+    name:
+      - socat
+      - jq
+      - bc
+      - curl
+      - wget
+      - rsync
+      - openssl
+      - gawk
+      - findutils
+      - unzip
+      - inxi
+      - yad
+      - python3-requests
+      - python3-pyquery
+    state: present
+
+- name: Install system monitoring and misc apps
+  become: true
+  dnf:
+    name:
+      - btop
+      - nvtop
+      - cava
+      - fastfetch
+      - loupe           # image viewer
+      - qalculate-gtk
+    state: present
+
+# ── CLI tools from COPR ──────────────────────────────────────────────────────
+- name: Install CLI tools from COPR
+  become: true
+  dnf:
+    name:
+      - eza         # modern ls replacement
+      - lazygit     # TUI git client
+      - lazydocker  # TUI docker manager
+    state: present
+
+# ── Build toolchain — for sunsetr and hy3 plugin ────────────────────────────
+- name: Install build dependencies
+  become: true
+  dnf:
+    name:
       - cargo
       - cmake
       - meson
       - cpio
-      - socat
       - pkg-config
-      - g++
       - gcc
+      - gcc-c++
       - aquamarine-devel
       - hyprlang-devel
       - hyprcursor-devel
@@ -58,82 +273,50 @@
       - tomlplusplus-devel
     state: present
 
-#- name: Install hyprpm
-#  become: true
-#  dnf:
-#    name: hyprpm
-
-- name: Backup Dala configs
-  copy:
-    src: "/home/{{ user }}/DalaDesktop/configs"
-    dest: "/home/{{ user }}/DalaDesktop/configs-Dala-backup"
-
-- name: Symlink configs to ~/.config
+# ── sunsetr (night-time colour temperature, replaces hyprsunset) ─────────────
+- name: Create directory for sunsetr source
   file:
-    src: "/home/{{ user }}/DalaDesktop/configs"
-    dest: "/home/{{ user }}/.config"
-    state: link
-
-#- name: Update hyprpm
-#  command: hyprpm update
-
-#- name: Add hy3 plugin using hyprpm
-#  command: hyprpm add https://github.com/outfoxxed/hy3
-
-#- name: Enable hy3 plugin
-#  command: hyprpm enable hy3
-
-- name: Create folder for sunset repository
-  file:
-    path: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    path: "{{ repo_dir }}/InstallRepos/sunsetr"
     state: directory
 
 - name: Clone sunsetr repository
   git:
     repo: https://github.com/psi4j/sunsetr.git
-    dest: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    dest: "{{ repo_dir }}/InstallRepos/sunsetr"
+    update: yes
 
 - name: Build sunsetr
   command: cargo build --release
   args:
-    chdir: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr"
+    chdir: "{{ repo_dir }}/InstallRepos/sunsetr"
+    creates: "{{ repo_dir }}/InstallRepos/sunsetr/target/release/sunsetr"
+  become: false
 
-- name: Install sunsetr
+- name: Install sunsetr to /usr/local/bin
   become: true
   copy:
-    src: "/home/{{ user }}/DalaDesktop/InstallRepos/sunsetr/target/release/sunsetr"
-    dest: "/usr/local/bin/"
+    src: "{{ repo_dir }}/InstallRepos/sunsetr/target/release/sunsetr"
+    dest: /usr/local/bin/sunsetr
+    mode: '0755'
+    remote_src: true
 
-- name: Download rofi-power-menu script
+# ── rofi-power-menu ──────────────────────────────────────────────────────────
+- name: Download rofi-power-menu
   become: true
   get_url:
     url: https://raw.githubusercontent.com/jluttine/rofi-power-menu/master/rofi-power-menu
-    dest: "/usr/local/bin/rofi-power-menu"
+    dest: /usr/local/bin/rofi-power-menu
     mode: '0755'
 
-#- name: Reaload systemd daemons
-#  systemd:
-#    daemons_reexec: true
-#    daemon_reload: true
-
-#- name: Enable the monitor-watcher service
-#  systemd:
-#    name: monitor-watcher.service
-#    state: started
-#    enabled: true
-#    scope: user
-#  become_user: "{{ user }}"
-
-- name: Reload user-level systemd
+# ── Systemd user services ────────────────────────────────────────────────────
+- name: Reload user-level systemd daemon
   become: false
-  shell: |
-    systemctl --user daemon-reexec
-    systemctl --user daemon-reload
+  shell: systemctl --user daemon-reload
+  changed_when: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
-  become_user: "{{ user }}"
 
-- name: Enable and start user-level monitor-watcher service
+- name: Enable and start monitor-watcher service
   become: false
   systemd:
     name: monitor-watcher.service
@@ -142,4 +325,32 @@
     scope: user
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
-  become_user: "{{ user }}"
+
+- name: Enable and start waybar service
+  become: false
+  systemd:
+    name: waybar.service
+    enabled: true
+    state: started
+    scope: user
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
+
+# ── Input group — required for waybar keyboard-state module ──────────────────
+- name: Ensure input group exists
+  become: true
+  group:
+    name: input
+    state: present
+
+- name: Add user to input group
+  become: true
+  user:
+    name: "{{ user }}"
+    groups: input
+    append: true
+
+# NOTE: hy3 (i3-like tiling plugin) must be installed manually after first login:
+#   hyprpm add https://github.com/outfoxxed/hy3
+#   hyprpm enable hy3
+# hyprpm requires a running Hyprland session, so it cannot run from this playbook.

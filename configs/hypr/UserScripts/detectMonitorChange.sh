@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MONITOR_DIR="$HOME/.config/hypr/Monitor_Profiles"
-CURRENT_CONF="$HOME/.config/hypr/monitors.conf"
+CURRENT_CONF="$HOME/.config/hypr/monitors.lua"
 
 
 get_connected_outputs() {
@@ -28,22 +28,22 @@ while true; do
         case "$COUNT" in
             0)
                 echo "Only laptop monitor"
-                cp "$MONITOR_DIR/laptop_only.conf" "$CURRENT_CONF"
+                cp "$MONITOR_DIR/laptop_only.lua" "$CURRENT_CONF"
 		ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Laptop" /home/dala/.config/waybar/config
                 ;;
             1)
                 echo "One external monitor"
 		ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Laptop" /home/dala/.config/waybar/config
-                cp "$MONITOR_DIR/hdmi_only.conf" "$CURRENT_CONF"
+                cp "$MONITOR_DIR/hdmi_only.lua" "$CURRENT_CONF"
                 ;;
             2)
                 echo "Two external monitors"
-                cp "$MONITOR_DIR/koleje.conf" "$CURRENT_CONF"
+                cp "$MONITOR_DIR/koleje.lua" "$CURRENT_CONF"
 		ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Koleje" /home/dala/.config/waybar/config
                 ;;
             *)
                 echo "Unknown configuration, using default"
-                cp "$MONITOR_DIR/default.conf" "$CURRENT_CONF"
+                cp "$MONITOR_DIR/laptop_only.lua" "$CURRENT_CONF"
 		ln -sf "/home/dala/.config/waybar/configs/[TOP] Default Dala Laptop" /home/dala/.config/waybar/config
                 ;;
         esac

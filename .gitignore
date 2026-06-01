@@ -1,2 +1,45 @@
-nvimrc/.vim/vimrcs/temp_dirs/*
-nvimrc/.vim/plugged/*
+# Electron app data and browser profiles (caches, not configs)
+configs/BraveSoftware/
+configs/Code/
+configs/discord/
+configs/Electron/
+configs/Arduino IDE/
+configs/arduino-ide/
+
+# Runtime and telemetry
+configs/pulse/*-runtime
+configs/go/
+configs/abrt/
+
+# Binary / auto-generated app state
+configs/dconf/
+configs/cava/
+
+# Game saves / app data (not system config)
+configs/StardewValley/
+
+# XournalPP auto-generated metadata
+configs/xournalpp/metadata/
+
+# App configs not worth tracking
+configs/GIMP/
+configs/PrusaSlicer/
+configs/evolution/
+configs/libreoffice/
+configs/RawTherapee/
+configs/calibre/
+configs/obs-studio/
+configs/qmk/
+configs/toot/
+configs/filezilla/
+configs/gtk-3.0/bookmarks
+configs/QtProject.conf
+configs/kritadisplayrc
+configs/kritarc
+configs/Raspberry Pi/
+configs/uv/
+configs/Nextcloud/
+configs/autostart/
+
+# Build artifacts
+InstallRepos/
