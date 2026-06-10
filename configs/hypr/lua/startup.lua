@@ -19,7 +19,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("nm-applet --indicator")
     hl.exec_cmd("swaync")
     hl.exec_cmd("blueman-applet")
-    hl.exec_cmd("sunsetr")
+    hl.exec_cmd("bash -c 'sleep 5 && sunsetr'")
     hl.exec_cmd("solaar")
 
     -- Clipboard history

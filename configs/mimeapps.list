@@ -18,3 +18,4 @@ application/pdf=brave-browser.desktop;
 text/html=org.mozilla.firefox.desktop;
 image/x-panasonic-rw=rawtherapee.desktop;
 application/octet-stream=gimp.desktop;
+image/jpeg=org.gnome.Loupe.desktop;

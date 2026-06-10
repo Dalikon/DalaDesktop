@@ -72,7 +72,8 @@ return{
 
 {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+    dependencies = { 'romus204/tree-sitter-manager.nvim', 'echasnovski/mini.nvim' },
+    ft = { 'markdown' },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
@@ -154,15 +155,19 @@ return{
         },
       },
       formatters_by_ft = {
-        cpp = { "clang-format" },
-        c   = { "clang-format" },
-        python = { "black" },
-        lua = { "stylua" },
+        cpp        = { "clang-format" },
+        c          = { "clang-format" },
+        python     = { "black" },
+        lua        = { "stylua" },
+        typescript = { "prettier" },
+        javascript = { "prettier" },
+        typescriptreact = { "prettier" },
+        javascriptreact = { "prettier" },
       },
     })
   end,
   keys = {
-    { "<leader>cf", function() require("conform").format() end, desc = "Format file" },
+    { "<leader>cf", function() require("conform").format({ lsp_fallback = true }) end, desc = "Format file" },
   },
   }
 

@@ -86,5 +86,5 @@ hl.config({
 hl.device({ name = "wacom-one-by-wacom-m-pen", output = "eDP-1" })
 
 -- 3-finger swipe gestures (left = next workspace, right = prev)
-hl.gesture({ fingers = 3, direction = "left",  action = "workspace", workspace_name = "e+1" })
-hl.gesture({ fingers = 3, direction = "right", action = "workspace", workspace_name = "e-1" })
+hl.gesture({ fingers = 3, direction = "left",  action = "workspace", workspace_name = "e-1" })
+hl.gesture({ fingers = 3, direction = "right", action = "workspace", workspace_name = "e+1" })
